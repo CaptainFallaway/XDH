@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>XRF</title>
+    <script src="./src/main.js" type="module"></script>
+    <link rel="stylesheet" href="./src/main.scss">
+</head>
+<body>
+    <div id="model-control-buttons" class="container-fluid d-inline-flex my-3">
+        <div class="d-grid pe-4">
+            <small class="mb-1">Group By:</small>
+            <div class="btn-group col-1">
+                <button class="btn btn-primary border-dark border-end">Boat</button>
+                <button class="btn btn-primary border-dark border-start">Operator</button>
+            </div>
+        </div>
+        <div class="d-grid pe-4">
+            <small class="mb-1">Sort By:</small>
+            <div class="btn-group col-1">
+                <button class="btn btn-primary border-dark border-end">Critical</button>
+                <button class="btn btn-primary border-dark border-start border-end">Latest</button>
+                <button class="btn btn-primary border-dark border-start">Oldest</button>
+            </div>
+        </div>
+        <button class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
+    </div>
+    <div id="models" class="container-fluid m-auto">
+        <div class="container-fluid bg-primary border rounded">
+            <h2>Hello</h2>
+        </div>
+    </div>
+</body>
+</html>
