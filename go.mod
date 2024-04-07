@@ -1,4 +1,4 @@
-module XRF
+module github.com/CaptainFallaway/XDH
 
 go 1.21
 

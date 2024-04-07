@@ -1,9 +1,10 @@
 package app
 
 import (
-	"XRF/templates"
 	"math/rand"
 	"strings"
+
+	"github.com/CaptainFallaway/XDH/templates"
 )
 
 // For binding to the frontend

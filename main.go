@@ -1,8 +1,9 @@
 package main
 
 import (
-	"XRF/app"
 	"embed"
+
+	"github.com/CaptainFallaway/XDH/app"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
