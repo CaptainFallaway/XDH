@@ -1,35 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark" style="margin: 0; height: 100%;">
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>XRF</title>
-    <script src="./src/main.js" type="module"></script>
     <link rel="stylesheet" href="./src/main.scss">
 </head>
 <body>
-    <div id="model-control-buttons" class="container-fluid d-inline-flex my-3">
-        <div class="d-grid pe-4">
-            <small class="mb-1">Group By:</small>
-            <div class="btn-group col-1">
-                <button class="btn btn-primary border-dark border-end">Boat</button>
-                <button class="btn btn-primary border-dark border-start">Operator</button>
+    <div id="content" class="container-fluid px-3 m-auto">
+        <div id="model-control-buttons" class="container-fluid d-inline-flex my-3">
+            <div class="d-grid pe-4">
+                <small class="mb-1">Group By:</small>
+                <div class="btn-group col-1">
+                    <button class="btn btn-primary border-end">Boat</button>
+                    <button class="btn btn-primary border-start">Operator</button>
+                </div>
+            </div>
+            <div class="d-grid pe-4">
+                <small class="mb-1">Sort By:</small>
+                <div class="btn-group col-1">
+                    <button class="btn btn-primary border-end">Critical</button>
+                    <button class="btn btn-primary border-start border-end">Latest</button>
+                    <button class="btn btn-primary border-start">Oldest</button>
+                </div>
+            </div>
+            <button id="test" class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
+        </div>
+        <div id="models" class="container-fluid m-auto">
+            <div id="model" class="container-fluid d-inline-flex bg-primary border-5 border-start border-danger rounded my-2">
+                <div class="d-grid my-4 mx-3">
+                    <small class="fw-light text-secondary">Boat ID</small>
+                    <p class="m-0">Lorem, ipsum.</p>
+                </div>
+                <div class="text d-grid my-4 mx-3">
+                    <small class="fw-light text-secondary">Operator</small>
+                    <p class="m-0">Lorem, ipsum.</p>
+                </div>
+                <div class="text d-grid my-4 mx-3">
+                    <small class="fw-light text-secondary">First Date</small>
+                    <p class="m-0">Lorem, ipsum.</p>
+                </div>
+                <div class="text d-grid my-4 mx-3">
+                    <small class="fw-light text-secondary">Last Date</small>
+                    <p class="m-0">Lorem, ipsum.</p>
+                </div>
+                <i class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-down"></i>
             </div>
         </div>
-        <div class="d-grid pe-4">
-            <small class="mb-1">Sort By:</small>
-            <div class="btn-group col-1">
-                <button class="btn btn-primary border-dark border-end">Critical</button>
-                <button class="btn btn-primary border-dark border-start border-end">Latest</button>
-                <button class="btn btn-primary border-dark border-start">Oldest</button>
-            </div>
-        </div>
-        <button class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
     </div>
-    <div id="models" class="container-fluid m-auto">
-        <div class="container-fluid bg-primary border rounded">
-            <h2>Hello</h2>
-        </div>
-    </div>
+
+    <script src="./src/main.js" type="module"></script>
 </body>
 </html>
