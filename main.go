@@ -21,7 +21,7 @@ func main() {
 		Title:     "XRF",
 		Width:     1024,
 		Height:    768,
-		MinWidth:  604,
+		MinWidth:  606,
 		MinHeight: 400,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
@@ -29,6 +29,7 @@ func main() {
 		OnStartup: application.Startup,
 		Bind: []interface{}{
 			application,
+			new(app.ModelInterface),
 		},
 	})
 
