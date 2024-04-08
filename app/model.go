@@ -15,7 +15,7 @@ func (a *ModelInterface) GetModels() string {
 	var statuses = [3]string{"danger", "warning", "success"}
 	for i := 0; i < 100; i++ {
 		x := rand.Intn(3)
-		sb.WriteString(Render(templates.BoatModel(statuses[x])))
+		sb.WriteString(Render(templates.BoatModel(string(i), statuses[x])))
 	}
 	return sb.String()
 }

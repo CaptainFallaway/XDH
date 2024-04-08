@@ -26,7 +26,13 @@ export class ViewModel {
         // Bindings here
 
         bindEvent("#test", "click", this.render);
-        bindEvent("#model", "click", this.render);
+    }
+
+    bindmodels() {
+        var models = document.getElementById("models");
+        [...models.children].forEach((model) => {
+            model.addEventListener("click", this.render);
+        });
     }
 
     // Just Testing
@@ -34,6 +40,7 @@ export class ViewModel {
         GetModels()
         .then((result) => {
             swapInner("models", result)
+            viewmodel.bindmodels();
         })
         .catch((err) => {
             console.log(err);
@@ -41,4 +48,4 @@ export class ViewModel {
     }
 }
  
-new ViewModel()
+const viewmodel = new ViewModel()
