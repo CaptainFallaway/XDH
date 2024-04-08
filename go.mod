@@ -7,7 +7,7 @@ toolchain go1.21.5
 require (
 	github.com/a-h/templ v0.2.648
 	github.com/gocarina/gocsv v0.0.0-20231116093920-b87c2d0e983a
-	github.com/wailsapp/wails/v2 v2.7.1
+	github.com/wailsapp/wails/v2 v2.8.0
 	github.com/xuri/excelize/v2 v2.8.1
 )
 
