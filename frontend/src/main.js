@@ -1,51 +1,13 @@
-/// This is supposed to be like a lightweight ViewModel
+import { ViewModel } from "./viewmodel";
 
-import {GetModels} from '../wailsjs/go/app/ModelInterface';
+// Create a new ViewModel
+let viewModel = new ViewModel();
 
-// Helper function to bind events to elements
-function bindEvent(id, event, callback) {
-    let element = document.querySelector(id);
-    if (!element) {
-        console.error("Element not found: " + id);
-        return;
-    }
-    element.addEventListener(event, callback);
-}
-
-function swapInner(id, content) {
-    let element = document.getElementById(id);
-    if (!element) {
-        console.error("Element not found: " + id);
-        return;
-    }
-    element.innerHTML = content;
-}
-
-export class ViewModel {
-    constructor() {
-        // Bindings here
-
-        bindEvent("#test", "click", this.render);
-    }
-
-    bindmodels() {
-        var models = document.getElementById("models");
-        [...models.children].forEach((model) => {
-            model.addEventListener("click", this.render);
+document.getElementById("test").addEventListener("click", () => {
+    viewModel.fetchModels()
+        .then((html) => {
+            viewModel.updateModelsList(html);
+        }).catch((err) => {
+            console.error(err);
         });
-    }
-
-    // Just Testing
-    render() {
-        GetModels()
-        .then((result) => {
-            swapInner("models", result)
-            viewmodel.bindmodels();
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-}
- 
-const viewmodel = new ViewModel()
+});
