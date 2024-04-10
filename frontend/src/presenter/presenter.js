@@ -1,6 +1,6 @@
 /// This is supposed to be like a lightweight Presenter
 
-import { GetModels } from '../../wailsjs/go/app/ModelInterface';
+import { GetModel, GetModels } from '../../wailsjs/go/app/ModelInterface';
 import { updateModelsList  } from './util';
 
 export class Presenter {
@@ -13,6 +13,29 @@ export class Presenter {
     }
 
     async updateModel(id) {
-        console.log("Updating model: " + id);
+        return GetModel(id, true)
+        .then((result) => {
+            let element = document.getElementById(id);
+            element.innerHTML = result;
+            element.classList.add("active");
+        })
+        .catch((err) => console.error(err));
+    }
+
+    async closeActiveModel() {
+        let elements = document.getElementsByClassName("active");
+        console.log(elements)
+        if (elements.length == 0) {
+            return;
+        }
+
+        let element = elements[0];
+
+        return GetModel(element.id, false)
+        .then((result) => {
+            element.innerHTML = result;
+            element.classList.remove("active");
+        })
+        .catch((err) => console.error(err));
     }
 }

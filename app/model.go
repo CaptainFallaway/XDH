@@ -1,22 +1,34 @@
 package app
 
 import (
-	"fmt"
-	"math/rand"
-	"strings"
-
+	"github.com/CaptainFallaway/XDH/data_handling"
 	"github.com/CaptainFallaway/XDH/templates"
 )
 
+const FilePath string = "sample_data/Praktik 2024-03-16.csv"
+
 // For binding to the frontend
-type ModelInterface struct{}
+type ModelInterface struct {
+	FilePath string
+}
 
 func (a *ModelInterface) GetModels() string {
-	sb := strings.Builder{}
-	var statuses = [3]string{"danger", "warning", "success"}
-	for i := 0; i < 100; i++ {
-		x := rand.Intn(3)
-		sb.WriteString(Render(templates.BoatModel(fmt.Sprint(i), statuses[x])))
+	a.FilePath = FilePath
+	scans, err := data_handling.ParseCsv(a.FilePath)
+	if err != nil {
+		panic(err)
 	}
-	return sb.String()
+
+	group := data_handling.GroupByBoats(scans)
+
+	var sorted []data_handling.Scan
+	for boat, scans := range group {
+
+	}
+
+	return Render(templates.BoatModel(scans))
+}
+
+func (a *ModelInterface) GetModel(id string, active bool) string {
+	return Render(templates.BoatModelContent(active))
 }

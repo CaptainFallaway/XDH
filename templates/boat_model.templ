@@ -1,5 +1,7 @@
 package templates
 
+import "github.com/CaptainFallaway/XDH/data_handling"
+
 func Border(status string) string {
   return "border-" + status
 }
@@ -11,12 +13,28 @@ templ AbstractInfo(title, text string) {
   </div>
 }
 
-templ BoatModel(id string, status string) {
-	<div id={ id } class={"container-fluid", "d-inline-flex", "bg-primary", "rounded", "my-2", "border-5", "border-start", Border(status)}>
-		@AbstractInfo("Boat ID", "Lorem Ipsum.")
-    @AbstractInfo("Operator", "Lorem Ipsum.")
-    @AbstractInfo("First Date", "Lorem Ipsum.")
-    @AbstractInfo("Last Date", "Lorem Ipsum.")
-		<i class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-down"></i>
-	</div>
+templ MoreInfo(title, text, grid string) {
+  <div class={"d-grid", "my-4", "mx-3", grid}>
+    <small class="fw-light text-secondary">{ title }</small>
+    <p class="m-0">{ text }</p>
+  </div>
+}
+
+templ BoatModel([]data_handl) {
+  <div id={ id } class={"container-fluid", "bg-primary", "rounded", "my-4", "border-5", "border-start", Border(status)}>
+    <div class="container-fluid d-inline-flex my-2">
+      @AbstractInfo("Boat ID", "Lorem Ipsum.")
+      @AbstractInfo("Operator", "Lorem Ipsum.")
+      @AbstractInfo("First Date", "Lorem Ipsum.")
+      @AbstractInfo("Last Date", "Lorem Ipsum.")
+      <i id="up" class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-up d-none"></i>
+      <i id="down" class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-down"></i>
+    </div>
+    <div class={"container-fluid", "my-2", "grid", "d-none"}>
+      <div class="row">
+        @MoreInfo("Boat ID", "Lorem Ipsum.", "col-6")
+        @MoreInfo("Operator", "Lorem Ipsum.", "col-6")
+      </div>
+    </div>
+  </div>
 }
