@@ -6,9 +6,9 @@ type Sorted struct {
 	Scans    []Scan
 }
 
-func SortByCriticality(scans []Scan) []Sorted {
-	var ret []Sorted = make([]Sorted, len(scans))
+// func SortByCriticality(scans []Scan) []Sorted {
+// 	var ret []Sorted = make([]Sorted, len(scans))
 
-	for i, scan := range scans {
-		
-}
+// 	for i, scan := range scans {
+// 	}
+// }

@@ -1,10 +1,13 @@
 package data_handling
 
-import "slices"
+import (
+	"slices"
+)
 
 type Grouping interface {
 	Keys() []string
 	Get(key string) []Scan
+	Items() map[string][]Scan
 }
 
 type grouping struct {
@@ -25,6 +28,10 @@ func (g grouping) Keys() []string {
 
 func (g grouping) Get(key string) []Scan {
 	return g.data[key]
+}
+
+func (g grouping) Items() map[string][]Scan {
+	return g.data
 }
 
 func GroupByBoats(scans []Scan) Grouping {

@@ -1,6 +1,6 @@
 package templates
 
-import "github.com/CaptainFallaway/XDH/data_handling"
+// import "github.com/CaptainFallaway/XDH/data_handling"
 
 func Border(status string) string {
   return "border-" + status
@@ -20,8 +20,8 @@ templ MoreInfo(title, text, grid string) {
   </div>
 }
 
-templ BoatModel([]data_handl) {
-  <div id={ id } class={"container-fluid", "bg-primary", "rounded", "my-4", "border-5", "border-start", Border(status)}>
+templ BoatModel(id string, status string) {
+  <div id={ id } class={"container-fluid", "bg-primary", "rounded-lg", "my-4", "border-5s", "border-start", Border(status)}>
     <div class="container-fluid d-inline-flex my-2">
       @AbstractInfo("Boat ID", "Lorem Ipsum.")
       @AbstractInfo("Operator", "Lorem Ipsum.")

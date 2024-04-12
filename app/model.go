@@ -1,6 +1,8 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/CaptainFallaway/XDH/data_handling"
 	"github.com/CaptainFallaway/XDH/templates"
 )
@@ -21,14 +23,13 @@ func (a *ModelInterface) GetModels() string {
 
 	group := data_handling.GroupByBoats(scans)
 
-	var sorted []data_handling.Scan
-	for boat, scans := range group {
-
+	sb := strings.Builder{}
+	for boat := range group.Items() {
+		sb.WriteString(Render(templates.BoatModel(boat, "success")))
 	}
-
-	return Render(templates.BoatModel(scans))
+	return sb.String()
 }
 
-func (a *ModelInterface) GetModel(id string, active bool) string {
-	return Render(templates.BoatModelContent(active))
-}
+// func (a *ModelInterface) GetModel(id string, active bool) string {
+// 	return Render(templates.BoatModel(active))
+// }
