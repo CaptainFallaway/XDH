@@ -1,0 +1,44 @@
+package templates
+
+import (
+	"strings"
+
+	internal "github.com/CaptainFallaway/XDH/data_pipeline"
+)
+
+func Border(model internal.BoatIDGrouping) string {
+	switch model.Violations["Sn"] {
+	case 0:
+		return "border-success"
+	case 1:
+		return "border-warning"
+	default:
+		return "border-danger"
+	}
+}
+
+func JoinSlice(operators []string) string {
+	return strings.Join(operators, ", ")
+}
+
+templ abstractInfo(title, text string) {
+	<div class="d-grid my-4 mx-3" wails-ignore>
+		<small class="fw-light text-secondary">{ title }</small>
+		<p class="m-0">{ text }</p>
+	</div>
+}
+
+templ moreInfo(title, text, grid string) {
+	<div class={ "d-grid", "my-4", "mx-3", grid }>
+		<small class="fw-light text-secondary">{ title }</small>
+		<p class="m-0">{ text }</p>
+	</div>
+}
+
+templ chevron(state bool) {
+	if state {
+		<i id="up" class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-up"></i>
+	} else {
+		<i id="down" class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-down"></i>
+	}
+}
