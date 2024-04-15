@@ -7,26 +7,26 @@
     <link rel="stylesheet" href="./src/main.scss">
     <script src="./src/main.js" type="module" defer></script>
 </head>
-<body>
+<body style="overflow-x: hidden;">
     <div id="content" class="container-fluid px-2 m-auto">
         <div id="model-control-buttons" class="container-fluid d-inline-flex my-3">
             <div class="d-grid pe-4">
                 <small class="mb-1">Group By:</small>
                 <div class="btn-group col-1">
-                    <button wails-ref="ViewModelInterface:GroupByBoatID" wails-trgt="models" class="btn btn-primary border-end">Boat</button>
-                    <button class="btn btn-primary border-start">Operator</button>
+                    <button wails-ref="ViewModelInterface:GroupByBoatID" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-end">Boat</button>
+                    <button wails-ref="ViewModelInterface:GroupByOperator" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-start">Operator</button>
                 </div>
             </div>
             <div class="d-grid pe-4">
                 <small class="mb-1">Sort Critical By:</small>
                 <div class="btn-group col-1">
-                    <button class="btn btn-primary border-end py-2">Sn</button>
-                    <button class="btn btn-primary border-start border-end">Cu</button>
-                    <button class="btn btn-primary border-start border-end">Pb</button>
-                    <button class="btn btn-primary border-start">Zn</button>
+                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Sn" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-end py-2">Sn</button>
+                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Cu" wails-trgt="models" wails-swap="inner"  class="btn btn-primary border-start border-end">Cu</button>
+                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Pb" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-start border-end">Pb</button>
+                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Zn" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-start">Zn</button>
                 </div>
             </div>
-            <button wails-ref="ViewModelInterface:ReadFile" wails-swap="none" id="test" class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
+            <button wails-ref="ViewModelInterface:ReadFile" id="test" class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
         </div>
         <div id="models" class="container-fluid m-auto p-auto mb-6">
             <div id="model" class="container-fluid d-inline-flex bg-primary border-5 border-start border-danger rounded">

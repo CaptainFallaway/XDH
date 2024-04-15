@@ -3,11 +3,11 @@ package templates
 import (
 	"strings"
 
-	internal "github.com/CaptainFallaway/XDH/data_pipeline"
+	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
-func Border(model internal.BoatIDGrouping) string {
-	switch model.Violations["Sn"] {
+func Border(model data_pipeline.Sortable, metal string) string {
+	switch model.GetViolation(metal) {
 	case 0:
 		return "border-success"
 	case 1:

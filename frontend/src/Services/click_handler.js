@@ -26,7 +26,7 @@ async function getSwap(element) {
     if (temp) {
         return temp;
     } else {
-        return "inner"
+        return "none"
     }
 }
 

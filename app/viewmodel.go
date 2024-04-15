@@ -1,48 +1,85 @@
 package app
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/CaptainFallaway/XDH/data_pipeline"
+	"github.com/CaptainFallaway/XDH/templates"
 )
 
-const FilePath string = "sample_data/Praktik 2024-03-16.xls"
-
-type State struct {
-	FilePath     string
-	SortingMetal string
-	Scans        []data_pipeline.ScanRow
+func NewViewModelInterface() *ViewModelInterface {
+	return &ViewModelInterface{
+		FilePath:     "sample_data/Stockholms SS omgång 4 + Ängsvik BK.xls",
+		SortingMetal: "Sn",
+	}
 }
 
 // For binding to the frontend
-type viewModelInterface struct {
-	State *State
+type ViewModelInterface struct {
+	FilePath     string
+	SortingMetal string
+	CurrGrouping string
+	Scans        []data_pipeline.ScanRow
 }
 
-func NewViewModel() *viewModelInterface {
-	return &viewModelInterface{
-		State: &State{
-			FilePath:     FilePath,
-			SortingMetal: "Sn",
-		},
-	}
-}
-
-func (a *viewModelInterface) ReadFile() {
-	a.State.FilePath = FilePath
-	temp, err := data_pipeline.ParseExcel(a.State.FilePath)
+func (vm *ViewModelInterface) ReadFile() {
+	temp, err := data_pipeline.ParseExcel(vm.FilePath)
 	if err != nil {
 		panic(err)
 	}
-	a.State.Scans = temp
+	vm.Scans = temp
 }
 
-func (a *viewModelInterface) GroupByBoatID() string {
-	grouping := data_pipeline.GroupByBoat(&a.State.Scans)
+func (vm *ViewModelInterface) GetBoatIDModel(index string, expanded string) string {
+	convIndex, err := strconv.ParseUint(index, 10, 32)
+	if err != nil {
+		panic(err)
+	}
 
-	sorted := data_pipeline.SortByViolations(&grouping, "Sn")
+	convExpanded, err := strconv.ParseBool(expanded)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println(sorted)
+	grouping := data_pipeline.GroupByBoat(&vm.Scans)
 
-	return ""
+	for _, group := range grouping {
+		if group.Index == uint32(convIndex) {
+			return Render(templates.BoatIDModelContent(group, !convExpanded))
+		}
+	}
+
+	return "Something went horribly wrong!"
+}
+
+func (vm *ViewModelInterface) GroupByBoatID() string {
+	vm.CurrGrouping = "BoatID"
+
+	grouping := data_pipeline.GroupByBoat(&vm.Scans)
+
+	data_pipeline.SortByViolations(&grouping, vm.SortingMetal)
+
+	return Render(templates.BoatIDModelList(&grouping, vm.SortingMetal))
+}
+
+func (vm *ViewModelInterface) GroupByOperator() string {
+	vm.CurrGrouping = "Operator"
+
+	grouping := data_pipeline.GroupByOperator(&vm.Scans)
+
+	data_pipeline.SortByViolations(&grouping, vm.SortingMetal)
+
+	return Render(templates.OperatorModelList(&grouping, vm.SortingMetal))
+}
+
+func (vm *ViewModelInterface) SetSortingMetal(metal string) string {
+	if MetalInMetalPolicy(metal) {
+		vm.SortingMetal = metal
+	}
+
+	if vm.CurrGrouping == "BoatID" {
+		return vm.GroupByBoatID()
+	} else {
+		return vm.GroupByOperator()
+	}
 }

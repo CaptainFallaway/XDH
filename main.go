@@ -30,7 +30,7 @@ func main() {
 		OnStartup: application.Startup,
 		Bind: []interface{}{
 			application,
-			app.NewViewModel(),
+			app.NewViewModelInterface(),
 		},
 	})
 

@@ -12,10 +12,10 @@ import "bytes"
 
 import (
 	"fmt"
-	internal "github.com/CaptainFallaway/XDH/data_pipeline"
+	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
-func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Component {
+func OperatorModelContent(model data_pipeline.OperatorGrouping, expanded bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -35,7 +35,7 @@ func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Compon
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v, %v", model.Index, expanded))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\boat_model.templ`, Line: 9, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\operator_model.templ`, Line: 11, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -48,7 +48,7 @@ func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Compon
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(model.Index))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\boat_model.templ`, Line: 9, Col: 172}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\operator_model.templ`, Line: 14, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -58,11 +58,11 @@ func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = abstractInfo("Boat ID", model.BoatID).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = abstractInfo("Operator", model.Operator).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = abstractInfo("Operators", JoinSlice(model.Operators)).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = abstractInfo("Boat IDs", JoinSlice(model.BoatIDs)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -83,7 +83,7 @@ func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Compon
 			return templ_7745c5c3_Err
 		}
 		if expanded {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid d-inline-flex\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid grid\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -107,7 +107,7 @@ func BoatModelContent(model internal.BoatIDGrouping, expanded bool) templ.Compon
 	})
 }
 
-func AllBoatModels(models []internal.BoatIDGrouping) templ.Component {
+func OperatorModelList(models *[]data_pipeline.OperatorGrouping, metal string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -120,8 +120,8 @@ func AllBoatModels(models []internal.BoatIDGrouping) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		for _, model := range models {
-			var templ_7745c5c3_Var5 = []any{"container-fluid", "bg-primary", "rounded", "mb-3", "p-0", "border-5", "border-start", Border(model)}
+		for _, model := range *models {
+			var templ_7745c5c3_Var5 = []any{"container-fluid", "bg-primary", "rounded", "mb-3", "p-0", "border-5", "border-start", Border(model, metal)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -133,7 +133,7 @@ func AllBoatModels(models []internal.BoatIDGrouping) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(model.Index))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\boat_model.templ`, Line: 26, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\operator_model.templ`, Line: 33, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -146,7 +146,7 @@ func AllBoatModels(models []internal.BoatIDGrouping) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var5).String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\boat_model.templ`, Line: 1, Col: 0}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates\operator_model.templ`, Line: 1, Col: 0}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -156,7 +156,7 @@ func AllBoatModels(models []internal.BoatIDGrouping) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = BoatModelContent(model, false).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = OperatorModelContent(model, false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

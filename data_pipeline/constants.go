@@ -14,7 +14,7 @@ var MetalPolicy metalPolicy = metalPolicy{
 	Metals:          [4]string{"Pb", "Zn", "Cu", "Sn"}, // Theses are the metals that we care about in this project
 	PbViolation:     100,
 	ZnViolation:     100,
-	CuViolation:     100,
+	CuViolation:     1000,
 	SnViolation:     100,
 }
 

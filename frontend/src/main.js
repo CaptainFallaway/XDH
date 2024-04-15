@@ -8,7 +8,7 @@ import { handleWailsBindClick } from "./Services/click_handler.js";
 // the attributes i have defined are:
 // wails-ref: object:method
 // wails-state: comma separated list of parameters (default is empty)
-// wails-swap: inner, outer or none (default is inner)
+// wails-swap: inner, outer or none (default is none)
 // wails-trgt: either class or id of target element (default is self)
 // wails-ignore: if present, the click event will not be handled
 

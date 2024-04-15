@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 
+	"github.com/CaptainFallaway/XDH/data_pipeline"
 	"github.com/a-h/templ"
 )
 
@@ -22,4 +23,13 @@ func Render(comp templ.Component) string {
 	var component Component
 	comp.Render(context.Background(), &component)
 	return component.Html
+}
+
+func MetalInMetalPolicy(metal string) bool {
+	for _, m := range data_pipeline.MetalPolicy.Metals {
+		if m == metal {
+			return true
+		}
+	}
+	return false
 }
