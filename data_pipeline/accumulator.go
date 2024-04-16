@@ -2,9 +2,7 @@ package data_pipeline
 
 import "fmt"
 
-// The base accumulator using the identity as a generic
-
-type baseAccumulator struct {
+type accumulator struct {
 	FirstDate         string
 	LastDate          string
 	Scans             []ScanRow
@@ -12,9 +10,11 @@ type baseAccumulator struct {
 	ErrorNotes        []string
 	UnitSet           set
 	ViolationCountMap map[string]uint8
+	BoatID            string
+	Operators         set
 }
 
-func (a *baseAccumulator) AppendScan(scan ScanRow) {
+func (a *accumulator) AppendScan(scan ScanRow) {
 	if scan.Duration < ValidMinimumScanTime {
 		a.InvalidScans = append(a.InvalidScans, scan)
 	} else {
@@ -22,23 +22,23 @@ func (a *baseAccumulator) AppendScan(scan ScanRow) {
 	}
 }
 
-func (a *baseAccumulator) AddErrorNote(err string) {
+func (a *accumulator) AddErrorNote(err string) {
 	a.ErrorNotes = append(a.ErrorNotes, err)
 }
 
-func (a *baseAccumulator) JustifyEarilestTime(time string) {
+func (a *accumulator) JustifyEarilestTime(time string) {
 	a.FirstDate = compareEarliestTimes(a.FirstDate, time)
 }
 
-func (a *baseAccumulator) JustifyLatestTime(time string) {
+func (a *accumulator) JustifyLatestTime(time string) {
 	a.LastDate = compareLatestTimes(a.LastDate, time)
 }
 
-func (a *baseAccumulator) CountViolations(scan ScanRow) {
+func (a *accumulator) CountViolations(scan ScanRow) {
 	violationCount(scan, &a.ViolationCountMap)
 }
 
-func (a *baseAccumulator) GetUnit() string {
+func (a *accumulator) GetUnit() string {
 	units := a.UnitSet.ToSlice()
 
 	if len(units) > 1 {
@@ -48,84 +48,33 @@ func (a *baseAccumulator) GetUnit() string {
 	return units[0]
 }
 
-type boatIdAccumulator struct {
-	baseAccumulator
-	BoatID    string
-	Operators set
-}
-
-func (a boatIdAccumulator) BuildGrouping(index uint32) BoatIDGrouping {
-	return BoatIDGrouping{
-		BaseGrouping: BaseGrouping{
-			Index:        index,
-			FirstDate:    a.FirstDate,
-			LastDate:     a.LastDate,
-			Unit:         a.GetUnit(),
-			Scans:        a.Scans,
-			InvalidScans: a.InvalidScans,
-			ErrorNotes:   a.ErrorNotes,
-			Violations:   a.ViolationCountMap,
-		},
-		BoatID:    a.BoatID,
-		Operators: a.Operators.ToSlice(),
-	}
-}
-
-type operatorAccumulator struct {
-	baseAccumulator
-	Operator string
-	BoatIDs  set
-}
-
-func (a operatorAccumulator) BuildGrouping(index uint32) OperatorGrouping {
-	return OperatorGrouping{
-		BaseGrouping: BaseGrouping{
-			Index:        index,
-			FirstDate:    a.FirstDate,
-			LastDate:     a.LastDate,
-			Unit:         a.GetUnit(),
-			Scans:        a.Scans,
-			InvalidScans: a.InvalidScans,
-			ErrorNotes:   a.ErrorNotes,
-			Violations:   a.ViolationCountMap,
-		},
-		Operator: a.Operator,
-		BoatIDs:  a.BoatIDs.ToSlice(),
+func (a accumulator) BuildGrouping(index uint32) Grouping {
+	return Grouping{
+		Index:        index,
+		FirstDate:    a.FirstDate,
+		LastDate:     a.LastDate,
+		Unit:         a.GetUnit(),
+		Scans:        a.Scans,
+		InvalidScans: a.InvalidScans,
+		ErrorNotes:   a.ErrorNotes,
+		Violations:   a.ViolationCountMap,
+		BoatID:       a.BoatID,
+		Operators:    a.Operators.ToSlice(),
 	}
 }
 
 // We need to call this to instanciate the struct to avoid nil pointer dereference
-func newBoatIdAccumulator(boatID string) *boatIdAccumulator {
+func newAccumulator(boatID string) *accumulator {
 	vcm := make(map[string]uint8, MetalPolicy.AmmountOfMetals)
 
 	for _, metal := range MetalPolicy.Metals {
 		vcm[metal] = 0
 	}
 
-	return &boatIdAccumulator{
-		baseAccumulator: baseAccumulator{
-			UnitSet:           *newSet(),
-			ViolationCountMap: vcm,
-		},
-		BoatID:    boatID,
-		Operators: *newSet(),
-	}
-}
-
-// We need to call this to instanciate the struct to avoid nil pointer dereference
-func newOperatorAccumulator(operator string) *operatorAccumulator {
-	vcm := make(map[string]uint8, MetalPolicy.AmmountOfMetals)
-
-	for _, metal := range MetalPolicy.Metals {
-		vcm[metal] = 0
-	}
-
-	return &operatorAccumulator{
-		baseAccumulator: baseAccumulator{
-			UnitSet:           *newSet(),
-			ViolationCountMap: vcm,
-		},
-		Operator: operator,
-		BoatIDs:  *newSet(),
+	return &accumulator{
+		UnitSet:           *newSet(),
+		ViolationCountMap: vcm,
+		BoatID:            boatID,
+		Operators:         *newSet(),
 	}
 }

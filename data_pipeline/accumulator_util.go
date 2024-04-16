@@ -82,7 +82,6 @@ func compareLatestTimes(t1, t2 string) string {
 	}
 }
 
-// TODO: Might want to make this more modular
 // Count violations for a scan, param vcm is a pointer to the ViolationCountMap defined in the AccumulatorBase struct
 func violationCount(scan ScanRow, vcm *map[string]uint8) {
 	if scan.Sn.Value >= MetalPolicy.SnViolation {
