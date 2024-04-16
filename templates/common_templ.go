@@ -16,8 +16,8 @@ import (
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
-func Border(model data_pipeline.Sortable, metal string) string {
-	switch model.GetViolation(metal) {
+func Border(model data_pipeline.Grouping, metal string) string {
+	switch model.Violations[metal] {
 	case 0:
 		return "border-success"
 	case 1:
@@ -44,7 +44,7 @@ func abstractInfo(title, text string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-grid my-4 mx-3\" wails-ignore><small class=\"fw-light text-secondary\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-grid my-4 mx-3\"><small class=\"fw-light text-secondary\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

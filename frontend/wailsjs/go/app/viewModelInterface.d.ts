@@ -5,8 +5,6 @@ export function GetBoatIDModel(arg1:string,arg2:string):Promise<string>;
 
 export function GroupByBoatID():Promise<string>;
 
-export function GroupByOperator():Promise<string>;
-
 export function ReadFile():Promise<void>;
 
 export function SetSortingMetal(arg1:string):Promise<string>;

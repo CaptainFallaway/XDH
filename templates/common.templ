@@ -6,8 +6,8 @@ import (
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
-func Border(model data_pipeline.Sortable, metal string) string {
-	switch model.GetViolation(metal) {
+func Border(model data_pipeline.Grouping, metal string) string {
+	switch model.Violations[metal] {
 	case 0:
 		return "border-success"
 	case 1:
@@ -22,7 +22,7 @@ func JoinSlice(operators []string) string {
 }
 
 templ abstractInfo(title, text string) {
-	<div class="d-grid my-4 mx-3" wails-ignore>
+	<div class="d-grid my-4 mx-3">
 		<small class="fw-light text-secondary">{ title }</small>
 		<p class="m-0">{ text }</p>
 	</div>

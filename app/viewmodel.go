@@ -18,7 +18,6 @@ func NewViewModelInterface() *ViewModelInterface {
 type ViewModelInterface struct {
 	FilePath     string
 	SortingMetal string
-	CurrGrouping string
 	Scans        []data_pipeline.ScanRow
 }
 
@@ -53,8 +52,6 @@ func (vm *ViewModelInterface) GetBoatIDModel(index string, expanded string) stri
 }
 
 func (vm *ViewModelInterface) GroupByBoatID() string {
-	vm.CurrGrouping = "BoatID"
-
 	grouping := data_pipeline.GroupByBoat(&vm.Scans)
 
 	data_pipeline.SortByViolations(&grouping, vm.SortingMetal)
@@ -62,24 +59,10 @@ func (vm *ViewModelInterface) GroupByBoatID() string {
 	return Render(templates.BoatIDModelList(&grouping, vm.SortingMetal))
 }
 
-func (vm *ViewModelInterface) GroupByOperator() string {
-	vm.CurrGrouping = "Operator"
-
-	grouping := data_pipeline.GroupByOperator(&vm.Scans)
-
-	data_pipeline.SortByViolations(&grouping, vm.SortingMetal)
-
-	return Render(templates.OperatorModelList(&grouping, vm.SortingMetal))
-}
-
 func (vm *ViewModelInterface) SetSortingMetal(metal string) string {
 	if MetalInMetalPolicy(metal) {
 		vm.SortingMetal = metal
 	}
 
-	if vm.CurrGrouping == "BoatID" {
-		return vm.GroupByBoatID()
-	} else {
-		return vm.GroupByOperator()
-	}
+	return vm.GroupByBoatID()
 }
