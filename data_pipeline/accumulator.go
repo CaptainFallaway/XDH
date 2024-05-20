@@ -48,8 +48,8 @@ func (a *accumulator) GetUnit() string {
 	return units[0]
 }
 
-func (a accumulator) BuildGrouping(index uint32) BoatIDGrouping {
-	return BoatIDGrouping{
+func (a accumulator) BuildGrouping(index uint32) Grouping {
+	return Grouping{
 		Index:        index,
 		FirstDate:    a.FirstDate,
 		LastDate:     a.LastDate,
@@ -63,14 +63,18 @@ func (a accumulator) BuildGrouping(index uint32) BoatIDGrouping {
 	}
 }
 
+// We need to call this to instanciate the struct to avoid nil pointer dereference
 func newAccumulator(boatID string) *accumulator {
+	vcm := make(map[string]uint8, MetalPolicy.AmmountOfMetals)
+
+	for _, metal := range MetalPolicy.Metals {
+		vcm[metal] = 0
+	}
+
 	return &accumulator{
-		BoatID:            boatID,
-		Scans:             make([]ScanRow, 0),
-		InvalidScans:      make([]ScanRow, 0),
-		ErrorNotes:        make([]string, 0),
 		UnitSet:           *newSet(),
-		ViolationCountMap: make(map[string]uint8),
+		ViolationCountMap: vcm,
+		BoatID:            boatID,
 		Operators:         *newSet(),
 	}
 }

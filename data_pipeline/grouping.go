@@ -1,7 +1,7 @@
 package data_pipeline
 
 // This is also supposed to model what is going to show on the frontend
-type BoatIDGrouping struct {
+type Grouping struct {
 	Index        uint32
 	FirstDate    string
 	LastDate     string
@@ -14,7 +14,7 @@ type BoatIDGrouping struct {
 	Operators    []string
 }
 
-func GroupByBoat(scans *[]ScanRow) []BoatIDGrouping {
+func GroupByBoat(scans *[]ScanRow) []Grouping {
 	boatMap := make(map[string][]ScanRow)
 	indexer := newIndexer() // I do this to mitigate the randomness of maps
 
@@ -24,7 +24,7 @@ func GroupByBoat(scans *[]ScanRow) []BoatIDGrouping {
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}
 
-	grouping := make([]BoatIDGrouping, 0, len(boatMap))
+	grouping := make([]Grouping, 0, len(boatMap))
 
 	// Iterating over the map and creating the groupings for each boat with a accumulator
 	for boatID, scans := range boatMap {
