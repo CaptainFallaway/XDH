@@ -6,8 +6,8 @@ import (
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
-func Border(model data_pipeline.Sortable, metal string) string {
-	switch model.GetViolation(metal) {
+func Border(model data_pipeline.BoatIDGrouping, metal string) string {
+	switch model.Violations[metal] {
 	case 0:
 		return "border-success"
 	case 1:

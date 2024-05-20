@@ -10,10 +10,6 @@ export function GroupByBoatID() {
   return window['go']['app']['ViewModelInterface']['GroupByBoatID']();
 }
 
-export function GroupByOperator() {
-  return window['go']['app']['ViewModelInterface']['GroupByOperator']();
-}
-
 export function ReadFile() {
   return window['go']['app']['ViewModelInterface']['ReadFile']();
 }
