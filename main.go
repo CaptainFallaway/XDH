@@ -16,21 +16,22 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	application := app.NewApp()
+	vmi := app.NewViewModelInterface()
 
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "XRF",
 		Width:     1024,
 		Height:    768,
-		MinWidth:  606,
-		MinHeight: 400,
+		MinWidth:  700,
+		MinHeight: 500,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
 		OnStartup: application.Startup,
 		Bind: []interface{}{
 			application,
-			app.NewViewModelInterface(),
+			vmi,
 		},
 	})
 
