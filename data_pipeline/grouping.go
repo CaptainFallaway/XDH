@@ -30,6 +30,10 @@ func GroupByBoat(scans *[]ScanRow) []Grouping {
 	for boatID, scans := range boatMap {
 		acc := newAccumulator(boatID)
 
+		if len(scans) < 8 {
+			acc.AddErrorNote("Less than 8 scans")
+		}
+
 		for _, scan := range scans {
 			acc.Operators.Add(scan.Operator)
 			acc.UnitSet.Add(scan.Units)

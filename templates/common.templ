@@ -21,10 +21,12 @@ func JoinSlice(operators []string) string {
 	return strings.Join(operators, ", ")
 }
 
-templ abstractInfo(title, text string) {
+templ abstractInfo(title string, text ...string) {
 	<div class="d-grid my-4 mx-3">
 		<small class="fw-light text-secondary">{ title }</small>
-		<p class="m-0">{ text }</p>
+		for _, t := range text {
+			<p class="m-0">{ t }</p>
+		}
 	</div>
 }
 

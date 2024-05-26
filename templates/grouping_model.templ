@@ -6,69 +6,70 @@ import (
 )
 
 templ BoatIDExpanded(model data_pipeline.Grouping) {
-	<div class="container-fluid grid">
-		<div class="row col-12">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">
-							Reading No
-						</th>
-						<th scope="col">
-							Duration
-						</th>
-						<th scope="col">
-							Operator
-						</th>
-						<th scope="col">
-							Date
-						</th>
-						<th scope="col">
-							Sn
-						</th>
-						<th scope="col">
-							Cu
-						</th>
-						<th scope="col">
-							Pb
-						</th>
-						<th scope="col">
-							Zn
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					for _, scan := range model.Scans {
-						<tr>
-							<td>
-								{ fmt.Sprint(scan.Reading) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Duration) }
-							</td>
-							<td>
-								{ scan.Operator }
-							</td>
-							<td>
-								{ scan.Time }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Sn.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Cu.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Pb.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Zn.Value) }
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
+	<div class="container-fluid d-inline-flex">
+		@abstractInfo("Error Notes:", model.ErrorNotes...)
+		// <div class="row rounded" style="overflow:hidden">
+			// <table class="table table-striped table-sm w-auto m-auto">
+			// 	<thead>
+			// 		<tr>
+			// 			<th scope="col">
+			// 				Reading No
+			// 			</th>
+			// 			<th scope="col">
+			// 				Duration
+			// 			</th>
+			// 			<th scope="col">
+			// 				Operator
+			// 			</th>
+			// 			<th scope="col">
+			// 				Date
+			// 			</th>
+			// 			<th scope="col">
+			// 				Sn
+			// 			</th>
+			// 			<th scope="col">
+			// 				Cu
+			// 			</th>
+			// 			<th scope="col">
+			// 				Pb
+			// 			</th>
+			// 			<th scope="col">
+			// 				Zn
+			// 			</th>
+			// 		</tr>
+			// 	</thead>
+			// 	<tbody class="table-group-divider">
+			// 		for _, scan := range model.Scans {
+			// 			<tr>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Reading) }
+			// 				</td>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Duration) }
+			// 				</td>
+			// 				<td>
+			// 					{ scan.Operator }
+			// 				</td>
+			// 				<td>
+			// 					{ scan.Time }
+			// 				</td>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Sn.Value) }
+			// 				</td>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Cu.Value) }
+			// 				</td>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Pb.Value) }
+			// 				</td>
+			// 				<td>
+			// 					{ fmt.Sprint(scan.Zn.Value) }
+			// 				</td>
+			// 			</tr>
+			// 		}
+			// 	</tbody>
+			// </table>
+		// </div>
 	</div>
 }
 

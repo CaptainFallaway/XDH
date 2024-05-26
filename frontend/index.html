@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark" style="margin: 0; height: 100%;">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -7,41 +7,38 @@
     <link rel="stylesheet" href="./src/main.scss">
     <script src="./src/main.js" type="module" defer></script>
 </head>
-<body style="overflow-x: hidden;">
-    <div id="content" class="container-fluid px-2 m-auto">
-        <div id="model-control-buttons" class="container-fluid d-inline-flex my-3">
+<body> 
+    <main class="container-fluid px-2 d-flex flex-column flex-fill vh-100">
+        <div id="control-buttons" class="container-fluid d-inline-flex my-3">
             <div class="d-grid pe-4">
                 <small class="mb-1">Sort Critical By:</small>
-                <div class="btn-group col-1">
-                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Sn" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-end py-2">Sn</button>
-                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Cu" wails-trgt="models" wails-swap="inner"  class="btn btn-primary border-start border-end">Cu</button>
-                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Pb" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-start border-end">Pb</button>
-                    <button wails-ref="ViewModelInterface:SetSortingMetal" wails-state="Zn" wails-trgt="models" wails-swap="inner" class="btn btn-primary border-start">Zn</button>
-                </div>
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Sn</label>
+                  
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2">
+                    <label class="btn btn-outline-primary" for="btnradio2">Cu</label>
+                  
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3">
+                    <label class="btn btn-outline-primary" for="btnradio3">Pb</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4">
+                    <label class="btn btn-outline-primary" for="btnradio4">Zn</label>
+                  </div>
             </div>
-            <button wails-ref="ViewModelInterface:ReadFile" id="test" class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button>
+            <!-- <button class="btn btn-primary align-self-end ms-auto">Generate All PDF's</button> -->
         </div>
-        <div id="models" class="container-fluid m-auto p-auto mb-6">
-            <div id="model" class="container-fluid d-inline-flex bg-primary border-5 border-start border-danger rounded">
-                <div class="d-grid my-4 mx-3">
-                    <small class="fw-light text-secondary">Boat ID</small>
-                    <p class="m-0">Lorem, ipsum.</p>
+        <div id="main-content" class="container-fluid pb-3 flex-grow-1">
+            <label class="w-100 h-100" for="file-input" id="drop-area">
+                <input type="file" accept=".xlsc,.csv" id="file-input" hidden>
+                <div role="button" style="border: 6px dashed;" class="border-secondary rounded w-100 h-100">
+                    <div class="pt-5 position-absolute top-50 start-50 translate-middle text-center">
+                        <i class="bi bi-upload m-auto" style="font-size: 5rem;"></i>
+                        <p class="text-center">Click to upload or Drag and Drop</p>
+                    </div>
                 </div>
-                <div class="text d-grid my-4 mx-3">
-                    <small class="fw-light text-secondary">Operator</small>
-                    <p class="m-0">Lorem, ipsum.</p>
-                </div>
-                <div class="text d-grid my-4 mx-3">
-                    <small class="fw-light text-secondary">First Date</small>
-                    <p class="m-0">Lorem, ipsum.</p>
-                </div>
-                <div class="text d-grid my-4 mx-3">
-                    <small class="fw-light text-secondary">Last Date</small>
-                    <p class="m-0">Lorem, ipsum.</p>
-                </div>
-                <i class="ms-auto p-3 fs-3 align-self-center bi bi-chevron-down"></i>
-            </div>
+            </label>
         </div>
-    </div>
+    </main>
 </body>
 </html>

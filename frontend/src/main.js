@@ -1,33 +1,16 @@
-import { getParentElementWithRef } from "./helpers.js";
-import { handleWailsBindClick } from "./Services/click_handler.js";
+const dropArea = document.getElementById('drop-area');
 
-// Entry point for the Wails bindings
-// The point of this is to create a similar experience / philosophy to htmx
-// Where backend returns html that gets swapped or put into the dom
+function handleFile(files) {
+    console.log(files);
+}
 
-// the attributes i have defined are:
-// wails-ref: object:method
-// wails-state: comma separated list of parameters (default is empty)
-// wails-swap: inner, outer or none (default is none)
-// wails-trgt: either class or id of target element (default is self)
-// wails-ignore: if present, the click event will not be handled
+dropArea.addEventListener('change', (e) => {
+    handleFile(e.target.files);
+});
 
-document.addEventListener("click", async (e) => {
-    let element = e.target;
+dropArea.addEventListener('dragover', (e) => { e.preventDefault() });
 
-    if (element.hasAttribute("wails-ref")) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        await handleWailsBindClick(element);
-    } 
-
-    let seekedWailsParent = await getParentElementWithRef(element);
-
-    if (seekedWailsParent !== null) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        await handleWailsBindClick(seekedWailsParent);
-    }
-})
+dropArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    handleFile(e.dataTransfer.files);
+});
