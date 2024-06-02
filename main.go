@@ -15,8 +15,10 @@ var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
-	application := app.NewApp()
-	vmi := app.NewViewModelInterface()
+
+	// We might want to just develop in the app.go file
+
+	app := app.NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -28,10 +30,9 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		OnStartup: application.Startup,
+		OnStartup: app.Startup,
 		Bind: []interface{}{
-			application,
-			vmi,
+			app,
 		},
 	})
 
