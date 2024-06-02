@@ -5,6 +5,7 @@ import (
 
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 	"github.com/a-h/templ"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Component struct {
@@ -32,4 +33,14 @@ func MetalInMetalPolicy(metal string) bool {
 		}
 	}
 	return false
+}
+
+var dialogOptions = runtime.OpenDialogOptions{
+	ShowHiddenFiles: true,
+	Filters: []runtime.FileFilter{
+		{
+			DisplayName: "Excel or Csv files",
+			Pattern:     "*.xlsx;*.xls;*.csv",
+		},
+	},
 }
