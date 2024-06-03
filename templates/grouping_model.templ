@@ -76,10 +76,6 @@ templ BoatIDExpanded(model data_pipeline.Grouping) {
 templ BoatIDModelContent(model data_pipeline.Grouping, expanded bool) {
 	<div
 		role="button"
-		wails-state={ fmt.Sprintf("%v, %v", model.Index, expanded) }
-		wails-ref="ViewModelInterface:GetBoatIDModel"
-		wails-swap="inner"
-		wails-trgt={ fmt.Sprint(model.Index) }
 		class="container-fluid d-inline-flex"
 	>
 		@abstractInfo("Boat ID", model.BoatID)

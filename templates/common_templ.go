@@ -189,3 +189,27 @@ func chevron(state bool) templ.Component {
 		return templ_7745c5c3_Err
 	})
 }
+
+func DropArea() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var10 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var10 == nil {
+			templ_7745c5c3_Var10 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label class=\"w-100 h-100\" for=\"file-input\" id=\"drop-area\"><input type=\"file\" accept=\".xls,.csv\" id=\"file-input\" hidden><div role=\"button\" style=\"border: 6px dashed;\" class=\"border-secondary rounded w-100 h-100\"><div class=\"pt-5 position-absolute top-50 start-50 translate-middle text-center\"><i class=\"bi bi-upload m-auto\" style=\"font-size: 5rem;\"></i><p class=\"text-center\">Click to upload file</p></div></div></label>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
