@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/CaptainFallaway/XDH/data_pipeline"
@@ -13,16 +12,12 @@ import (
 )
 
 type App struct {
-	Ctx          context.Context
-	SortingMetal string
-	Scans        []data_pipeline.ScanRow
-	Loaded       bool
+	Ctx       context.Context
+	Groupings []data_pipeline.Grouping
 }
 
 func NewApp() *App {
-	return &App{
-		SortingMetal: "Sn",
-	}
+	return &App{}
 }
 
 func (app *App) Startup(ctx context.Context) {
@@ -30,18 +25,20 @@ func (app *App) Startup(ctx context.Context) {
 }
 
 func (app *App) loadScans(path string) error {
-	var err error
-	app.Loaded = false
+	var (
+		err   error
+		scans []data_pipeline.ScanRow
+	)
 
 	if strings.HasSuffix(path, ".csv") {
-		app.Scans, err = data_pipeline.ParseCsv(path)
-		app.Loaded = true
+		scans, err = data_pipeline.ParseCsv(path)
 	} else if strings.HasSuffix(path, ".xlsx") || strings.HasSuffix(path, ".xls") {
-		app.Scans, err = data_pipeline.ParseExcel(path)
-		app.Loaded = true
+		scans, err = data_pipeline.ParseExcel(path)
 	} else {
 		return fmt.Errorf("invalid file type")
 	}
+
+	app.Groupings = data_pipeline.GroupByBoat(&scans)
 
 	return err
 }
@@ -55,6 +52,8 @@ func (app *App) OpenFileDialog() {
 		return
 	}
 
+	fmt.Printf("Path: %s", path)
+
 	if path == "" {
 		return
 	}
@@ -66,42 +65,22 @@ func (app *App) OpenFileDialog() {
 		fmt.Printf("Error loading file: %s \n", err.Error())
 		return
 	}
+
+	fmt.Print("File loaded\n")
+	runtime.EventsEmit(app.Ctx, "modelLoaded")
 }
 
-func (app *App) GetBoatIDModel(index string, expanded string) string {
-	convIndex, err := strconv.ParseUint(index, 10, 32)
-	if err != nil {
-		panic(err)
-	}
+func (app *App) GetModels(sortingMetal string) string {
+	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
 
-	convExpanded, err := strconv.ParseBool(expanded)
-	if err != nil {
-		panic(err)
-	}
-
-	grouping := data_pipeline.GroupByBoat(&app.Scans)
-
-	for _, group := range grouping {
-		if group.Index == uint32(convIndex) {
-			return Render(templates.BoatIDModelContent(group, !convExpanded))
-		}
-	}
-
-	return "Something went horribly wrong!"
+	return Render(templates.BoatIDModelList(&app.Groupings, sortingMetal))
 }
 
-func (app *App) GroupByBoatID() string {
-	grouping := data_pipeline.GroupByBoat(&app.Scans)
-
-	data_pipeline.SortByViolations(&grouping, app.SortingMetal)
-
-	return Render(templates.BoatIDModelList(&grouping, app.SortingMetal))
+func (app *App) GetModelContent(index int) string {
+	return ""
 }
 
-func (app *App) SetSortingMetal(metal string) string {
-	if MetalInMetalPolicy(metal) {
-		app.SortingMetal = metal
-	}
-
-	return app.GroupByBoatID()
+func (app *App) GetDropArea() string {
+	return Render(templates.DropArea())
+	// asd
 }
