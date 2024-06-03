@@ -20,9 +20,9 @@ func (c *Component) Write(p []byte) (int, error) {
 
 // You should only care about this function for rendering the templates
 // Returns the rendered HTML as a string for the swapping in the frontend
-func Render(comp templ.Component) string {
+func Render(ctx context.Context, comp templ.Component) string {
 	var component Component
-	comp.Render(context.Background(), &component)
+	comp.Render(ctx, &component)
 	return component.Html
 }
 

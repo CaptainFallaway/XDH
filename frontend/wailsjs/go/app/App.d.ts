@@ -3,7 +3,7 @@
 
 export function GetDropArea():Promise<string>;
 
-export function GetModelContent(arg1:number):Promise<string>;
+export function GetModelContent(arg1:string,arg2:boolean):Promise<string>;
 
 export function GetModels(arg1:string):Promise<string>;
 

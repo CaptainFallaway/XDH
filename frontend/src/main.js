@@ -1,4 +1,4 @@
-import { GetModels, OpenFileDialog, GetDropArea } from "../wailsjs/go/app/App.js";
+import { GetModels, OpenFileDialog, GetDropArea, GetModelContent } from "../wailsjs/go/app/App.js";
 import { EventsOn } from "../wailsjs/runtime/runtime.js";
 
 const content = document.getElementById('content');
@@ -16,6 +16,7 @@ document.querySelectorAll('input[name="sortingMetal"]').forEach((radio) => {
 
 async function loadDropArea() {
     content.innerHTML = await GetDropArea()
+
     document.getElementById('drop-area').addEventListener('click', async (e) => {
         e.preventDefault();
         await OpenFileDialog();
@@ -24,6 +25,23 @@ async function loadDropArea() {
 
 async function loadModels() {
     content.innerHTML = await GetModels(sortingMetal)
+
+    content.childNodes.forEach((model) => {
+        const callback = async () => {
+            const expanded = model.hasAttribute('expanded');
+
+            model.innerHTML = await GetModelContent(model.id, !expanded);
+            model.childNodes[0].addEventListener('click', callback);
+
+            if (expanded) {
+                model.removeAttribute('expanded')
+            } else {
+                model.setAttribute('expanded', '')
+            }
+        };
+
+        model.childNodes[0].addEventListener('click', callback);
+    });
 }
 
 // THIS WILL BE IMPLEMENTED IN WAILS VERSION 3

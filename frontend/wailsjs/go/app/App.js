@@ -6,8 +6,8 @@ export function GetDropArea() {
   return window['go']['app']['App']['GetDropArea']();
 }
 
-export function GetModelContent(arg1) {
-  return window['go']['app']['App']['GetModelContent'](arg1);
+export function GetModelContent(arg1, arg2) {
+  return window['go']['app']['App']['GetModelContent'](arg1, arg2);
 }
 
 export function GetModels(arg1) {

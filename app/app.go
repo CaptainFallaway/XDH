@@ -52,8 +52,6 @@ func (app *App) OpenFileDialog() {
 		return
 	}
 
-	fmt.Printf("Path: %s", path)
-
 	if path == "" {
 		return
 	}
@@ -66,21 +64,26 @@ func (app *App) OpenFileDialog() {
 		return
 	}
 
-	fmt.Print("File loaded\n")
 	runtime.EventsEmit(app.Ctx, "modelLoaded")
 }
 
 func (app *App) GetModels(sortingMetal string) string {
 	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
 
-	return Render(templates.BoatIDModelList(&app.Groupings, sortingMetal))
+	return Render(app.Ctx, templates.ModelList(&app.Groupings, sortingMetal))
 }
 
-func (app *App) GetModelContent(index int) string {
+func (app *App) GetModelContent(id string, expanded bool) string {
+	for _, grouping := range app.Groupings {
+		if grouping.BoatID == id {
+			return Render(app.Ctx, templates.ModelContent(grouping, expanded))
+		}
+	}
+
 	return ""
 }
 
 func (app *App) GetDropArea() string {
-	return Render(templates.DropArea())
+	return Render(app.Ctx, templates.DropArea())
 	// asd
 }
