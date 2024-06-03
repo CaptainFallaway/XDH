@@ -14,13 +14,8 @@ import (
 var assets embed.FS
 
 func main() {
-	// Create an instance of the app structure
-
-	// We might want to just develop in the app.go file
-
 	app := app.NewApp()
 
-	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "XRF",
 		Width:     1024,
