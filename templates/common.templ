@@ -22,12 +22,14 @@ func JoinSlice(operators []string) string {
 }
 
 templ abstractInfo(title string, text ...string) {
-	<div class="d-grid my-4 mx-3">
-		<small class="text-secondary">{ title }</small>
-		for _, t := range text {
-			<p class="m-0">{ t }</p>
-		}
-	</div>
+	if len(text) != 0 {
+		<div class="d-grid my-4 mx-3">
+			<small class="text-secondary">{ title }</small>
+			for _, t := range text {
+				<p class="m-0">{ t }</p>
+			}
+		</div>
+	}
 }
 
 templ moreInfo(title, text, grid string) {

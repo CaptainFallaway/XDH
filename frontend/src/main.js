@@ -1,17 +1,46 @@
 import { GetModels, OpenFileDialog, GetDropArea, GetModelContent } from "../wailsjs/go/app/App.js";
 import { EventsOn } from "../wailsjs/runtime/runtime.js";
+import * as bootstrap from "bootstrap";
 
+// Initialising stuff
 const content = document.getElementById('content');
 var sortingMetal = "Sn";
 
 EventsOn('modelLoaded', async () => loadModels())
 loadDropArea()
+// ===================
 
 document.querySelectorAll('input[name="sortingMetal"]').forEach((radio) => {
     radio.addEventListener('change', async (e) => {
         sortingMetal = e.target.id
         await loadModels()
     })
+});
+
+document.getElementById('unexpand').addEventListener('click', async () => {
+    const models = content.childNodes;
+    if (models.length <= 1) {
+        return;
+    }
+
+    models.forEach((model) => {
+        if (model.hasAttribute('expanded')) {
+            model.childNodes[0].click();
+        }
+    });
+});
+
+document.getElementById('expand').addEventListener('click', async () => {
+    const models = content.childNodes;
+    if (models.length <= 1) {
+        return;
+    }
+
+    models.forEach((model) => {
+        if (!model.hasAttribute('expanded')) {
+            model.childNodes[0].click();
+        }
+    });
 });
 
 async function loadDropArea() {

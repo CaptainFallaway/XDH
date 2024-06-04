@@ -1,86 +1,53 @@
 package templates
 
 import (
-	"fmt"
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 )
 
+script tableShowerButtons(boatID string) {
+	const tables = document.getElementById(boatID).getElementById("tables"); 
+
+	document.getElementById("valid-scans").addEventListener("click", function() {
+		const validScansTable = tables.childNodes[0];
+		const invalidScansTable = tables.childNodes[1];
+
+		validScansTable.removeAttribute("hidden");
+		invalidScansTable.setAttribute("hidden", "");§
+	});
+
+	document.getElementById("invalid-scans").addEventListener("click", function() {
+		const validScansTable = tables.childNodes[0];
+		const invalidScansTable = tables.childNodes[1];
+
+		invalidScansTable.removeAttribute("hidden");
+		validScansTable.setAttribute("hidden", "");§
+	});
+}
+
 templ ModelExpanded(model data_pipeline.Grouping) {
+	@tableShowerButtons(model.BoatID)
 	<div class="container-fluid grid">
-		<div class="d-inline-flex">
-			@abstractInfo("Error Notes:", model.ErrorNotes...)
-			@abstractInfo("Yapping:", "Yap", "Yap", "Yap")
+		<div class="row">
+			<div class="d-inline-flex">
+				@abstractInfo("Error Notes:", model.ErrorNotes...)
+				@abstractInfo("Yapping:", "Yap", "Yap", "Yap")
+			</div>
 		</div>
-		<div class="mx-3 row">
-			<table class="table table-sm table_transparent">
-				<thead>
-					<tr>
-						<th scope="col">
-							Reading No
-						</th>
-						<th scope="col">
-							Duration
-						</th>
-						<th scope="col">
-							Operator
-						</th>
-						<th scope="col">
-							Date
-						</th>
-						<th scope="col">
-							Sn
-						</th>
-						<th scope="col">
-							Cu
-						</th>
-						<th scope="col">
-							Pb
-						</th>
-						<th scope="col">
-							Zn
-						</th>
-					</tr>
-				</thead>
-				<tbody class="table-group-divider">
-					for _, scan := range model.Scans {
-						<tr>
-							<td>
-								{ fmt.Sprint(scan.Reading) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Duration) }
-							</td>
-							<td>
-								{ scan.Operator }
-							</td>
-							<td>
-								{ scan.Time }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Sn.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Cu.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Pb.Value) }
-							</td>
-							<td>
-								{ fmt.Sprint(scan.Zn.Value) }
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
+		<div class="row mx-3">
+			<div class="mb-2 btn-group">
+				<button id="valid-scans" class="btn btn-outline-primary">Valid Scans</button>
+				<button id="invalid-scans" class="btn btn-outline-primary">Invalid Scans</button>
+			</div>
+		</div>
+		<div id="tables" class="mx-3 row rounded border">
+			@DataTable(model.Scans, false)
+			@DataTable(model.InvalidScans, true)	
 		</div>
 	</div>
 }
 
 templ ModelContent(model data_pipeline.Grouping, expanded bool) {
-	<div
-		role="button"
-		class="container-fluid d-inline-flex"
-	>
+	<div role="button" class="container-fluid d-inline-flex">
 		@abstractInfo("Boat ID", model.BoatID)
 		@abstractInfo("Operators", JoinSlice(model.Operators))
 		@abstractInfo("First Date", model.FirstDate)
@@ -88,13 +55,14 @@ templ ModelContent(model data_pipeline.Grouping, expanded bool) {
 		@chevron(expanded)
 	</div>
 	if expanded {
+		<hr class="m-0"></hr>
 		@ModelExpanded(model)
 	}
 }
 
 templ ModelList(models *[]data_pipeline.Grouping, metal string) {
 	for _, model := range *models {
-		<div id={ model.BoatID } class={ "container-fluid", "rounded", "bg-secondary-subtle", "mb-3", "p-0", "border-5", "border-start", Border(model, metal) }>
+		<div id={ model.BoatID } class={ "container-fluid", "rounded", "mb-3", "p-0", "border-2", "border", Border(model, metal) }>
 			@ModelContent(model, false)
 		</div>
 	}
