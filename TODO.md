@@ -10,3 +10,4 @@
 - [ ] Add more spots for error notes
   - [ ] If the ammount of scans are less than 8
   - [ ] Other Inconsistensies in data
+- [ ] Make a profile thing where we can fill in the measure mans name, signature and maybe serie-number of the XRF scanning tool from Thermophisher.
