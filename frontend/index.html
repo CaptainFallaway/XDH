@@ -1,40 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>XRF</title>
-    <link rel="stylesheet" href="./src/main.scss">
-    <script src="./src/main.js" type="module" defer></script>
-</head>
-<body> 
-    <main class="container-fluid px-2 d-flex flex-column flex-fill vh-100">
-        <div id="control-buttons" class="container-fluid d-inline-flex my-3">
-            <div class="d-grid pe-4">
-                <small class="mb-1 text-secondary-emphasis">Sort Critical By:</small>
-                <div class="btn-group" role="group">
-                    <input type="radio" class="btn-check" name="sortingMetal" id="Sn" checked>
-                    <label class="btn btn-outline-primary" for="Sn">Sn</label>
-                  
-                    <input type="radio" class="btn-check" name="sortingMetal" id="Cu">
-                    <label class="btn btn-outline-primary" for="Cu">Cu</label>
-                  
-                    <input type="radio" class="btn-check" name="sortingMetal" id="Pb">
-                    <label class="btn btn-outline-primary" for="Pb">Pb</label>
-
-                    <input type="radio" class="btn-check" name="sortingMetal" id="Zn">
-                    <label class="btn btn-outline-primary" for="Zn">Zn</label>
-                  </div>
-            </div>
-            <div class="align-self-end ms-auto btn-group">
-                <button id="unexpand" class="btn btn-outline-primary"><i class="bi bi-chevron-up"></i></button>
-                <button id="expand" class="btn btn-outline-primary"><i class="bi bi-chevron-down"></i></button>
-            </div>
-      </div>
-            </div>
-        <div id="content" class="container-fluid pb-3 flex-grow-1">
-            <!-- The html will be rendered in main.js -->
-        </div>
-    </main>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Svelte</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
