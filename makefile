@@ -2,5 +2,6 @@
 dev:
 	wails dev
 
-templ:
-	templ generate
+# Component Install
+ci:
+	cd frontend && npx shadcn-svelte@latest add
