@@ -1,5 +1,6 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
+  "wailsjsdir": "./frontend/src/lib",
   "name": "XRF",
   "outputfilename": "XRF",
   "frontend:install": "npm install",
