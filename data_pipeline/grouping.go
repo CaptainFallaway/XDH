@@ -2,16 +2,16 @@ package data_pipeline
 
 // This is also supposed to model what is going to show on the frontend
 type Grouping struct {
-	Index        uint32
-	FirstDate    string
-	LastDate     string
-	Unit         string
-	Scans        []ScanRow
-	InvalidScans []ScanRow        // Scans that are under 20 seconds which is the chalmars standard
-	ErrorNotes   []string         // Notes that may be presented in the UI, get collected during grouping
-	Violations   map[string]uint8 // A map that contains each metal and the amount of times it has been over the "safe" value
-	BoatID       string
-	Operators    []string
+	Index        uint32           `json:"index"`
+	FirstDate    string           `json:"firstDate"`
+	LastDate     string           `json:"lastDate"`
+	Unit         string           `json:"unit"`
+	Scans        []ScanRow        `json:"scans"`
+	InvalidScans []ScanRow        `json:"invalidScans"`
+	ErrorNotes   []string         `json:"errorNotes"`
+	Violations   map[string]uint8 `json:"violations"`
+	BoatID       string           `json:"boatID"`
+	Operators    []string         `json:"operators"`
 }
 
 func GroupByBoat(scans *[]ScanRow) []Grouping {

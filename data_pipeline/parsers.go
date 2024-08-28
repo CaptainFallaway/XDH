@@ -35,27 +35,27 @@ func (n *MetalValue) MarshalCSV() (string, error) {
 // This is data we might care about, in most cases it'll not be all.
 // The fields of this struct might also change in the future since we might not care about some values anymore...
 type ScanRow struct {
-	Index      uint16     `csv:"Index"`
-	Reading    uint16     `csv:"Reading No"`
-	Time       string     `csv:"Time"`
-	Type       string     `csv:"Type"`
-	Duration   float32    `csv:"Duration"`
-	Units      string     `csv:"Units"`
-	SigmaValue int16      `csv:"Sigma Value"`
-	Sequence   string     `csv:"Sequence"`
-	User1      string     `csv:"User1"`
-	Flags      string     `csv:"Flags"`
-	Boat       string     `csv:"Boat"`
-	Operator   string     `csv:"Operator"`
-	UserLogin  string     `csv:"User Login"`
-	Pb         MetalValue `csv:"Pb"`
-	PbError    float64    `csv:"Pb Error"`
-	Zn         MetalValue `csv:"Zn"`
-	ZnError    float64    `csv:"Zn Error"`
-	Cu         MetalValue `csv:"Cu"`
-	CuError    float64    `csv:"Cu Error"`
-	Sn         MetalValue `csv:"Sn"`
-	SnError    float64    `csv:"Sn Error"`
+	Index      uint16     `csv:"Index" json:"index"`
+	Reading    uint16     `csv:"Reading No" json:"reading"`
+	Time       string     `csv:"Time" json:"time"`
+	Type       string     `csv:"Type" json:"type"`
+	Duration   float32    `csv:"Duration" json:"duration"`
+	Units      string     `csv:"Units" json:"unit"`
+	SigmaValue int16      `csv:"Sigma Value" json:"sigmaValue"`
+	Sequence   string     `csv:"Sequence" json:"sequence"`
+	User1      string     `csv:"User1" json:"user1"`
+	Flags      string     `csv:"Flags" json:"flags"`
+	Boat       string     `csv:"Boat" json:"boat"`
+	Operator   string     `csv:"Operator" json:"operator"`
+	UserLogin  string     `csv:"User Login" json:"userLogin"`
+	Pb         MetalValue `csv:"Pb" json:"pb"`
+	PbError    float64    `csv:"Pb Error" json:"pbError"`
+	Zn         MetalValue `csv:"Zn" json:"zn"`
+	ZnError    float64    `csv:"Zn Error" json:"znError"`
+	Cu         MetalValue `csv:"Cu" json:"cu"`
+	CuError    float64    `csv:"Cu Error" json:"cuError"`
+	Sn         MetalValue `csv:"Sn" json:"sn"`
+	SnError    float64    `csv:"Sn Error" json:"snError"`
 }
 
 func ParseCsv(filename string) ([]ScanRow, error) {
