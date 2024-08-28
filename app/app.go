@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/CaptainFallaway/XDH/data_pipeline"
-	"github.com/CaptainFallaway/XDH/templates"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -67,23 +66,22 @@ func (app *App) OpenFileDialog() {
 	runtime.EventsEmit(app.Ctx, "modelLoaded")
 }
 
-func (app *App) GetModels(sortingMetal string) string {
+func (app *App) GetModels(sortingMetal string) []data_pipeline.Grouping {
 	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
-
-	return Render(app.Ctx, templates.ModelList(&app.Groupings, sortingMetal))
+	return app.Groupings
 }
 
-func (app *App) GetModelContent(id string, expanded bool) string {
-	for _, grouping := range app.Groupings {
-		if grouping.BoatID == id {
-			return Render(app.Ctx, templates.ModelContent(grouping, expanded))
-		}
-	}
+// func (app *App) GetModelContent(id string, expanded bool) string {
+// 	for _, grouping := range app.Groupings {
+// 		if grouping.BoatID == id {
+// 			return Render(app.Ctx, templates.ModelContent(grouping, expanded))
+// 		}
+// 	}
 
-	return ""
-}
+// 	return ""
+// }
 
-func (app *App) GetDropArea() string {
-	return Render(app.Ctx, templates.DropArea())
-	// asd
-}
+// func (app *App) GetDropArea() string {
+// 	return Render(app.Ctx, templates.DropArea())
+// 	// asd
+// }
