@@ -5,14 +5,22 @@
 
     import Sun from "lucide-svelte/icons/sun";
     import Moon from "lucide-svelte/icons/moon";
-    import FolderArchive from "lucide-svelte/icons/folder-archive";
 
     import * as wails from "$lib/wailsjs/go/app/App.js";
 
     import { toggleValue } from "$lib/stores.js";
+
+    let prevTogleValue = $toggleValue;
+
+    $: {
+        if ($toggleValue == undefined) {
+            $toggleValue = prevTogleValue;
+        }
+        prevTogleValue = $toggleValue;
+    }
 </script>
 
-<div class="flex flex-row border-2 rounded-lg right-0 left-0 m-3 p-2">
+<div class="flex flex-row right-0 left-0 m-3">
     <div class="basis-1/2 text-left place-items-center">
         <ToggleGroup.Root
             bind:value={$toggleValue}
@@ -29,8 +37,8 @@
             </ToggleGroup.Item>
         </ToggleGroup.Root>
     </div>
-    <div class="basis-1/2 text-right place-items-center">
-        <Button on:click={wails.OpenFileDialog}>Allah</Button>
+    <div class="basis-1/2 flex gap-1 justify-end">
+        <Button on:click={wails.OpenFileDialog}>Open File</Button>
         <Button on:click={toggleMode}>
             <Sun
                 class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
