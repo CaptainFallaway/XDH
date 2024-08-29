@@ -1,7 +1,7 @@
 <script>
     import { toggleMode } from "mode-watcher";
     import { Button } from "$lib/components/ui/button";
-    import * as ToggleGroup from "$lib/components/ui/toggle-group/index.js";
+    import * as Tabs from "$lib/components/ui/tabs/index.js";
 
     import Sun from "lucide-svelte/icons/sun";
     import Moon from "lucide-svelte/icons/moon";
@@ -9,33 +9,16 @@
     import * as wails from "$lib/wailsjs/go/app/App.js";
 
     import { toggleValue } from "$lib/stores.js";
-
-    let prevTogleValue = $toggleValue;
-
-    $: {
-        if ($toggleValue == undefined) {
-            $toggleValue = prevTogleValue;
-        }
-        prevTogleValue = $toggleValue;
-    }
 </script>
 
-<div class="flex flex-row right-0 left-0 m-3">
+<div class="flex flex-row right-0 left-0 m-5">
     <div class="basis-1/2 text-left place-items-center">
-        <ToggleGroup.Root
-            bind:value={$toggleValue}
-            id="toggle"
-            type="single"
-            variant="outline"
-            class="justify-start"
-        >
-            <ToggleGroup.Item value="Pb" aria-label="Tenn">
-                <p>Pb</p>
-            </ToggleGroup.Item>
-            <ToggleGroup.Item value="Sn" aria-label="Fuck">
-                <p>Sn</p>
-            </ToggleGroup.Item>
-        </ToggleGroup.Root>
+        <Tabs.Root bind:value={$toggleValue} class="justify-start">
+            <Tabs.List>
+                <Tabs.Trigger value="Pb">Pb</Tabs.Trigger>
+                <Tabs.Trigger value="Sn">Sn</Tabs.Trigger>
+            </Tabs.List>
+        </Tabs.Root>
     </div>
     <div class="basis-1/2 flex gap-1 justify-end">
         <Button on:click={wails.OpenFileDialog}>Open File</Button>
