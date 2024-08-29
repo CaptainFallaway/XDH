@@ -10,20 +10,18 @@
     import * as wails from "$lib/wailsjs/go/app/App.js";
 
     let modelListPromise;
-    $: modelListPromise = wails.GetModels($toggleValue); 
+    $: modelListPromise = wails.GetModels($toggleValue);
 </script>
 
 <ModeWatcher />
 
 <MenuBar />
 
-
 <!-- svelte-ignore empty-block -->
 <!-- in the future i want to add a loading icon -->
-{#await modelListPromise}
-{:then modelList}
+{#await modelListPromise then modelList}
     {#each modelList as model}
-        <Model id={model.index.toString()} {model}/>
+        <Model id={model.index.toString()} {model} />
     {/each}
 {:catch error}
     <p>{error.message}</p>
