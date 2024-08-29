@@ -85,15 +85,15 @@
     {#if show}
         <Separator />
         <div
-            class="m-2 flex"
+            class="m-2 flex cursor-default"
             transition:slide|global={{ ...expandMotion }}
+            on:click|stopPropagation
+            on:keydown|stopPropagation
+            role="button"
+            tabindex="0"
         >
             <div
-                class="w-full mx-5 mb-5 flex flex-col cursor-default"
-                role="button"
-                tabindex="0"
-                on:click|stopPropagation
-                on:keydown|stopPropagation
+                class="w-full mx-5 mb-5 flex flex-col"
                 transition:fade|global
             >
                 <div class="w-full flex content-center justify-center gap-8">
