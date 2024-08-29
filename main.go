@@ -17,10 +17,10 @@ func main() {
 	app := app.NewApp()
 
 	err := wails.Run(&options.App{
-		Title:     "XRF",
+		Title:     "XDH",
 		Width:     1024,
 		Height:    768,
-		MinWidth:  700,
+		MinWidth:  800,
 		MinHeight: 500,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
