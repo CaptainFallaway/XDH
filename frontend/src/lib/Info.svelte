@@ -1,16 +1,16 @@
 <script>
-    export let desc = "";
-    export let info = "";
+    export let top = "";
+    export let bottom = "";
 </script>
 
-<div class="justify-start">
-    <small class="desc">{desc}</small>
-    <p>{info}</p>
+<div class="justify-start flex flex-col whitespace-nowrap">
+    <span class="top">{top}</span>
+    <span>{bottom}</span>
 </div>
 
 <style>
-    .desc {
-        /* font-weight: bold; */
-        color: var(--secondary)
+    .top {
+        opacity: 0.7;
+        font-size: small;
     }
 </style>
