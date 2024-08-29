@@ -13,8 +13,8 @@ import (
 )
 
 type MetalValue struct {
-	Value float64
-	IsLod bool
+	Value float64 `json:"value"`
+	IsLod bool    `json:"isLod"`
 }
 
 func (n *MetalValue) UnmarshalCSV(val string) (err error) {
