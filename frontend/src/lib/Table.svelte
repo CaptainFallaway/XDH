@@ -11,6 +11,7 @@
 <Table.Root>
     <Table.Header>
         <Table.Row>
+            <Table.Head>#</Table.Head>
             <Table.Head>Reading No</Table.Head>
             <Table.Head>Duration</Table.Head>
             <Table.Head>Time</Table.Head>
@@ -19,8 +20,9 @@
         </Table.Row>
     </Table.Header>
     <Table.Body>
-        {#each scans as scan}
+        {#each scans as scan, i}
             <Table.Row>
+                <Table.Cell>{i + 1}</Table.Cell>
                 <Table.Cell>{scan.reading}</Table.Cell>
                 <Table.Cell>{scan.duration}</Table.Cell>
                 <Table.Cell>{scan.time}</Table.Cell>
