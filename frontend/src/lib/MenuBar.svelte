@@ -9,20 +9,31 @@
     import * as wails from "$lib/wailsjs/go/app/App.js";
 
     import { toggleValue } from "$lib/stores.js";
+
+    function openFile() {
+        wails.OpenFileDialog().then(() => {
+            console.log("File opened");
+        
+            // Sketchy way to force a re-render
+            const temp = $toggleValue
+            $toggleValue = '';
+            $toggleValue = temp;
+        })
+    }
 </script>
 
 <div class="flex flex-row right-0 left-0 m-5">
     <div class="basis-1/2 text-left place-items-center">
         <Tabs.Root bind:value={$toggleValue} class="justify-start">
-            <Tabs.List>
+            <Tabs.List class="shadow-xl">
                 <Tabs.Trigger value="Pb">Pb</Tabs.Trigger>
                 <Tabs.Trigger value="Sn">Sn</Tabs.Trigger>
             </Tabs.List>
         </Tabs.Root>
     </div>
     <div class="basis-1/2 flex gap-1 justify-end">
-        <Button on:click={wails.OpenFileDialog}>Open File</Button>
-        <Button on:click={toggleMode}>
+        <Button on:click={openFile} class="shadow-xl">Open File</Button>
+        <Button on:click={toggleMode} class="shadow-xl">
             <Sun
                 class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
             />
