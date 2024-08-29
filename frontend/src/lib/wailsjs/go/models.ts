@@ -1,7 +1,8 @@
 export namespace data_pipeline {
 	
 	export class MetalValue {
-	
+	    value: number;
+	    isLod: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new MetalValue(source);
@@ -9,7 +10,8 @@ export namespace data_pipeline {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	
+	        this.value = source["value"];
+	        this.isLod = source["isLod"];
 	    }
 	}
 	export class ScanRow {
@@ -26,17 +28,13 @@ export namespace data_pipeline {
 	    boat: string;
 	    operator: string;
 	    userLogin: string;
-	    // Go type: MetalValue
-	    pb: any;
+	    pb: MetalValue;
 	    pbError: number;
-	    // Go type: MetalValue
-	    zn: any;
+	    zn: MetalValue;
 	    znError: number;
-	    // Go type: MetalValue
-	    cu: any;
+	    cu: MetalValue;
 	    cuError: number;
-	    // Go type: MetalValue
-	    sn: any;
+	    sn: MetalValue;
 	    snError: number;
 	
 	    static createFrom(source: any = {}) {
@@ -58,13 +56,13 @@ export namespace data_pipeline {
 	        this.boat = source["boat"];
 	        this.operator = source["operator"];
 	        this.userLogin = source["userLogin"];
-	        this.pb = this.convertValues(source["pb"], null);
+	        this.pb = this.convertValues(source["pb"], MetalValue);
 	        this.pbError = source["pbError"];
-	        this.zn = this.convertValues(source["zn"], null);
+	        this.zn = this.convertValues(source["zn"], MetalValue);
 	        this.znError = source["znError"];
-	        this.cu = this.convertValues(source["cu"], null);
+	        this.cu = this.convertValues(source["cu"], MetalValue);
 	        this.cuError = source["cuError"];
-	        this.sn = this.convertValues(source["sn"], null);
+	        this.sn = this.convertValues(source["sn"], MetalValue);
 	        this.snError = source["snError"];
 	    }
 	
@@ -134,6 +132,7 @@ export namespace data_pipeline {
 		    return a;
 		}
 	}
+	
 
 }
 
