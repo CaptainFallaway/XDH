@@ -70,18 +70,3 @@ func (app *App) GetModels(sortingMetal string) []data_pipeline.Grouping {
 	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
 	return app.Groupings
 }
-
-// func (app *App) GetModelContent(id string, expanded bool) string {
-// 	for _, grouping := range app.Groupings {
-// 		if grouping.BoatID == id {
-// 			return Render(app.Ctx, templates.ModelContent(grouping, expanded))
-// 		}
-// 	}
-
-// 	return ""
-// }
-
-// func (app *App) GetDropArea() string {
-// 	return Render(app.Ctx, templates.DropArea())
-// 	// asd
-// }
