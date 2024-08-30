@@ -24,6 +24,7 @@ func GroupByBoat(scans *[]ScanRow) []Grouping {
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}
 
+	// TODO: Verify the allocation size
 	grouping := make([]Grouping, 0, len(boatMap))
 
 	// Iterating over the map and creating the groupings for each boat with a accumulator
