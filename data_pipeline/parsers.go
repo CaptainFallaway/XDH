@@ -85,6 +85,10 @@ func marshalRow(row *[]string, header *[]string) (ScanRow, error) {
 		return ScanRow{}, err
 	}
 
+	if len(scan) == 0 {
+		return ScanRow{}, fmt.Errorf("Scan could not be loaded")
+	}
+
 	scanRow := scan[0]
 
 	parser, err := time.Parse("1/2/06 15:04", scanRow.Time)
