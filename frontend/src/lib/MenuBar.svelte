@@ -13,12 +13,12 @@
     function openFile() {
         wails.OpenFileDialog().then(() => {
             console.log("File opened");
-        
+
             // Sketchy way to force a re-render
-            const temp = $toggleValue
-            $toggleValue = '';
+            const temp = $toggleValue;
+            $toggleValue = "";
             $toggleValue = temp;
-        })
+        });
     }
 </script>
 
@@ -26,8 +26,10 @@
     <div class="basis-1/2 text-left place-items-center">
         <Tabs.Root bind:value={$toggleValue} class="justify-start">
             <Tabs.List class="shadow-xl">
-                <Tabs.Trigger value="Pb">Pb</Tabs.Trigger>
                 <Tabs.Trigger value="Sn">Sn</Tabs.Trigger>
+                <Tabs.Trigger value="Pb">Pb</Tabs.Trigger>
+                <!-- <Tabs.Trigger value="Cu">Cu</Tabs.Trigger>
+                <Tabs.Trigger value="Zn">Zn</Tabs.Trigger> -->
             </Tabs.List>
         </Tabs.Root>
     </div>
