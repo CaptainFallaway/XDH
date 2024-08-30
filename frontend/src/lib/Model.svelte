@@ -48,7 +48,7 @@
         }
     }
 
-    let bombo = 'Valid';
+    let tabValue = "Valid";
 </script>
 
 <!-- shadow-red-500 shadow-yellow-500 shadow-green-500 (Not used right now) -->
@@ -92,29 +92,38 @@
             role="button"
             tabindex="0"
         >
-            <div
-                class="w-full mx-5 mb-5 flex flex-col"
-                transition:fade|global
-            >
+            <div class="w-full mx-5 mb-5 flex flex-col" transition:fade|global>
                 <div class="w-full flex content-center justify-center gap-8">
-                    <Info top="Total Scans" bottom={model.totalScans} />
-                    <Info top="Valid Scans" bottom={model.validScans} />
-                    <Info top="Invalid Scans" bottom={model.invalidScans} />
+                    <Info
+                        top="Violations"
+                        bottom={model.violations[$toggleValue]}
+                    />
+                    <Info
+                        top="Scans"
+                        bottom={model.scans != null ? model.scans.length : 0}
+                    />
+                    <Info
+                        top="Invalid Scans"
+                        bottom={model.invalidScans != null
+                            ? model.invalidScans.length
+                            : 0}
+                    />
+                    <Info top="Notes" bottom={model.errorNotes} />
                 </div>
-                <Tabs.Root bind:value={bombo} class="w-full">
+                <Tabs.Root bind:value={tabValue} class="w-full">
                     <Tabs.List>
                         <Tabs.Trigger value="Valid">Valid</Tabs.Trigger>
                         <Tabs.Trigger value="Invalid">Invalid</Tabs.Trigger>
                     </Tabs.List>
                     <Tabs.Content value="Valid">
-                        {#key bombo}
+                        {#key tabValue}
                             <div in:fade|global>
                                 <Table scans={model.scans} />
                             </div>
                         {/key}
                     </Tabs.Content>
                     <Tabs.Content value="Invalid">
-                        {#key bombo}
+                        {#key tabValue}
                             <div in:fade|global>
                                 <Table scans={model.invalidScans} />
                             </div>
