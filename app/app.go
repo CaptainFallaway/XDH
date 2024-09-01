@@ -7,10 +7,13 @@ import (
 
 	"github.com/CaptainFallaway/XDH/data_pipeline"
 
+	"sync"
+
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
+	Mux       sync.Mutex
 	Ctx       context.Context
 	Groupings []data_pipeline.Grouping
 }
@@ -43,6 +46,9 @@ func (app *App) loadScans(path string) error {
 }
 
 func (app *App) OpenFileDialog() {
+	app.Mux.Lock()
+	defer app.Mux.Unlock()
+
 	path, err := runtime.OpenFileDialog(app.Ctx, dialogOptions)
 
 	if err != nil {
@@ -62,11 +68,12 @@ func (app *App) OpenFileDialog() {
 		fmt.Printf("Error loading file: %s \n", err.Error())
 		return
 	}
-
-	runtime.EventsEmit(app.Ctx, "modelLoaded")
 }
 
 func (app *App) GetModels(sortingMetal string) []data_pipeline.Grouping {
+	app.Mux.Lock()
+	defer app.Mux.Unlock()
+
 	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
 	return app.Groupings
 }
