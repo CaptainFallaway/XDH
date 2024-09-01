@@ -5,20 +5,15 @@
 
     import Dropdown from "$lib/Dropdown.svelte";
 
-    // import Sun from "lucide-svelte/icons/sun";
-    // import Moon from "lucide-svelte/icons/moon";
-
-    import * as wails from "$lib/wailsjs/go/app/App.js";
+    import * as app from "$lib/wailsjs/go/app/App.js";
 
     import { toggleValue } from "$lib/stores.js";
 
-    function openFile() {
-        wails.OpenFileDialog().then(() => {
-            // Sketchy way to force a re-render svelte is svelting
-            const temp = $toggleValue;
-            $toggleValue = "";
-            $toggleValue = temp;
-        });
+    function openFileDialog() {
+        app.OpenFileDialog()
+        const temp = $toggleValue
+        $toggleValue = ""
+        $toggleValue = temp
     }
 </script>
 
@@ -34,7 +29,7 @@
         </Tabs.Root>
     </div>
     <div class="basis-1/2 flex gap-1 justify-end">
-        <Button on:click={openFile} class="shadow-xl">Open File</Button>
+        <Button on:click={openFileDialog} class="shadow-xl">Open File</Button>
         <Dropdown />
     </div>
 </div>
