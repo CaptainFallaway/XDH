@@ -1,9 +1,14 @@
 <script>
     export let top = "";
     export let bottom = "";
+    export let classes = "";
+
+    if (bottom == null) {
+        bottom = "None";
+    }
 </script>
 
-<div class="justify-start flex flex-col whitespace-nowrap">
+<div class="{classes} justify-start flex flex-col whitespace-nowrap">
     <span class="top">{top}</span>
     <span>{bottom}</span>
 </div>
