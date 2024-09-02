@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
     import "./app.css";
 
     import { ModeWatcher, mode } from "mode-watcher";
-    import { toggleValue } from "$lib/stores.js";
+    import { toggleValue } from "$lib/stores.ts";
 
     import Model from "$lib/Model.svelte";
     import MenuBar from "$lib/MenuBar.svelte";
 
     import * as app from "$lib/wailsjs/go/app/App.js";
 
-    async function getModels(togglevalue) {
+    async function getModels(togglevalue: string) {
         if (togglevalue === "") {
             return [];
         }

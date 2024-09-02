@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
     export let top = "";
-    export let bottom = "";
+    export let bottom: any;
     export let classes = "";
 
     if (bottom == null) {

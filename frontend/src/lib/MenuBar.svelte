@@ -1,13 +1,12 @@
-<script>
-    import { toggleMode } from "mode-watcher";
+<script lang="ts">
     import { Button } from "$lib/components/ui/button";
-    import * as Tabs from "$lib/components/ui/tabs/index.js";
+    import * as Tabs from "$lib/components/ui/tabs/index.ts";
 
     import Dropdown from "$lib/Dropdown.svelte";
 
     import * as app from "$lib/wailsjs/go/app/App.js";
 
-    import { toggleValue } from "$lib/stores.js";
+    import { toggleValue } from "$lib/stores.ts";
 
     function openFileDialog() {
         app.OpenFileDialog()

@@ -1,14 +1,14 @@
-<script>
+<script lang="ts">
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
     import { Button } from "$lib/components/ui/button";
     import { Menu } from "lucide-svelte";
 
     import { setMode, mode, resetMode } from "mode-watcher";
-    import Separator from "./components/ui/separator/separator.svelte";
+    // import Separator from "./components/ui/separator/separator.svelte";
 
     import { Sun, Moon } from "lucide-svelte";
 
-    let _mode;
+    let _mode: "dark" | "light" | undefined;
     mode.subscribe((value) => {
         _mode = value;
     });

@@ -1,7 +1,8 @@
-<script>
-    import * as Table from "$lib/components/ui/table/index.js";
+<script lang="ts">
+    import * as Table from "$lib/components/ui/table/index.ts";
+    import { data_pipeline } from "./wailsjs/go/models";
 
-    export let scans = [];
+    export let scans: Array<data_pipeline.ScanRow>;
 
     if (scans == null) {
         scans = [];

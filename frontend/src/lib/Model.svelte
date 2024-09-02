@@ -1,17 +1,18 @@
-<script>
+<script lang="ts">
     import { cubicOut } from "svelte/easing";
     import { fly, slide, fade } from "svelte/transition";
 
-    import { toggleValue } from "$lib/stores.js";
+    import { toggleValue } from "$lib/stores.ts";
     // import { Badge } from "$lib/components/ui/badge/";
     import { Separator } from "$lib/components/ui/separator";
     import Info from "$lib/Info.svelte";
-    import * as Tabs from "$lib/components/ui/tabs/index.js";
+    import * as Tabs from "$lib/components/ui/tabs/index.ts";
     import Table from "$lib/Table.svelte";
     import { ChevronUp, ChevronDown } from "lucide-svelte";
+    import { data_pipeline } from "./wailsjs/go/models";
 
     export let id = "0";
-    export let model = {};
+    export let model: data_pipeline.Grouping;
 
     const expandMotion = {
         duration: 500,
@@ -42,7 +43,7 @@
         show = !show;
     }
 
-    function handleKeyPress(event) {
+    function handleKeyPress(event: KeyboardEvent) {
         if (event.key === "Enter" || event.key === " ") {
             toggleShow();
         }
@@ -66,10 +67,9 @@
 >
     <div aria-label="info" class="flex gap-10 m-8 content-center">
         <Info top="Boat ID" bottom={model.boatID} />
-        <Info top="Operators" bottom={model.operators} />
+        <Info top="Operators" bottom={model.operators.join(", ")} />
         <Info top="First Date" bottom={model.firstDate} />
         <Info top="Last Date" bottom={model.lastDate} />
-        <!-- <Info top="Unit" bottom={model.unit} /> -->
         <div class="w-full flex items-center justify-end">
             {#if show}
                 <div in:fade|global>

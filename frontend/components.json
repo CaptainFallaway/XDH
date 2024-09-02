@@ -2,7 +2,7 @@
 	"$schema": "https://shadcn-svelte.com/schema.json",
 	"style": "default",
 	"tailwind": {
-		"config": "tailwind.config.js",
+		"config": "tailwind.config.ts",
 		"css": "src/app.css",
 		"baseColor": "stone"
 	},
@@ -10,5 +10,5 @@
 		"components": "$lib/components",
 		"utils": "$lib/utils"
 	},
-	"typescript": false
+	"typescript": true
 }
