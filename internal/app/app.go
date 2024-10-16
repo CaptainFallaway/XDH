@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/CaptainFallaway/XDH/data_pipeline"
+	"github.com/CaptainFallaway/XDH/internal/data_pipeline"
 
 	"sync"
 

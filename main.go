@@ -3,7 +3,7 @@ package main
 import (
 	"embed"
 
-	"github.com/CaptainFallaway/XDH/app"
+	"github.com/CaptainFallaway/XDH/internal/app"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
