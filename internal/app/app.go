@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/CaptainFallaway/XDH/internal/data_pipeline"
+	data_pipeline "github.com/CaptainFallaway/XDH/internal/providers"
 
 	"sync"
 
@@ -40,7 +40,7 @@ func (app *App) loadScans(path string) error {
 		return fmt.Errorf("invalid file type")
 	}
 
-	app.Groupings = data_pipeline.GroupByBoat(&scans)
+	app.Groupings = data_pipeline.MakeBoatGroupings(&scans)
 
 	return err
 }

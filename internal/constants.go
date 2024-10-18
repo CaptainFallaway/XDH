@@ -1,17 +1,17 @@
-package data_pipeline
+package internal
 
 type metalPolicy struct {
 	AmmountOfMetals uint8
-	Metals          [4]string
-	PbViolation     float64
-	ZnViolation     float64
-	CuViolation     float64
+	Metals          []string
 	SnViolation     float64
+	CuViolation     float64
+	ZnViolation     float64
+	PbViolation     float64
 }
 
 var MetalPolicy metalPolicy = metalPolicy{
 	AmmountOfMetals: 4,
-	Metals:          [4]string{"Pb", "Zn", "Cu", "Sn"}, // Theses are the metals that we care about in this project
+	Metals:          []string{"Pb", "Zn", "Cu", "Sn"}, // Theses are the metals that we care about in this project
 	PbViolation:     100,
 	ZnViolation:     100,
 	CuViolation:     1000,

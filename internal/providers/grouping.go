@@ -1,6 +1,6 @@
 package data_pipeline
 
-// This is also supposed to model what is going to show on the frontend
+// A grouping is a colletion of info and scans for a specific boat
 type Grouping struct {
 	Index        uint32           `json:"index"`
 	FirstDate    string           `json:"firstDate"`
@@ -14,9 +14,9 @@ type Grouping struct {
 	Operators    []string         `json:"operators"`
 }
 
-func GroupByBoat(scans *[]ScanRow) []Grouping {
+func MakeBoatGroupings(scans *[]ScanRow) []Grouping {
 	boatMap := make(map[string][]ScanRow)
-	indexer := newIndexer() // I do this to mitigate the randomness of maps
+	indexer := newIndexer() // Mitigate the randomness of maps
 
 	// Pre processing
 	for _, scan := range *scans {
@@ -24,12 +24,11 @@ func GroupByBoat(scans *[]ScanRow) []Grouping {
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}
 
-	// TODO: Verify the allocation size
 	grouping := make([]Grouping, 0, len(boatMap))
 
 	// Iterating over the map and creating the groupings for each boat with a accumulator
 	for boatID, scans := range boatMap {
-		acc := newAccumulator(boatID)
+		acc := newBoatModelBuilder(boatID)
 
 		if len(scans) < 8 {
 			acc.AddErrorNote("Less than 8 scans")

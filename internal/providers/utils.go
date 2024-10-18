@@ -2,6 +2,8 @@ package data_pipeline
 
 import (
 	"time"
+
+	"github.com/CaptainFallaway/XDH/internal"
 )
 
 type set struct {
@@ -46,57 +48,56 @@ func newIndexer() *indexer {
 
 // Returns earliest time
 func compareEarliestTimes(t1, t2 string) string {
-	pt1, err := time.Parse(TimeFormat, t1)
+	pt1, err := time.Parse(internal.TimeFormat, t1)
 	if err != nil {
 		return t2
 	}
 
-	pt2, err := time.Parse(TimeFormat, t2)
+	pt2, err := time.Parse(internal.TimeFormat, t2)
 	if err != nil {
 		return t1
 	}
 
 	if pt1.Unix() < pt2.Unix() {
-		return pt1.Format(TimeFormat)
+		return pt1.Format(internal.TimeFormat)
 	} else {
-		return pt2.Format(TimeFormat)
+		return pt2.Format(internal.TimeFormat)
 	}
 }
 
 // Returns latest time
 func compareLatestTimes(t1, t2 string) string {
-	pt1, err := time.Parse(TimeFormat, t1)
+	pt1, err := time.Parse(internal.TimeFormat, t1)
 	if err != nil {
 		return t2
 	}
 
-	pt2, err := time.Parse(TimeFormat, t2)
+	pt2, err := time.Parse(internal.TimeFormat, t2)
 	if err != nil {
 		return t1
 	}
 
 	if pt1.Unix() > pt2.Unix() {
-		return pt1.Format(TimeFormat)
+		return pt1.Format(internal.TimeFormat)
 	} else {
-		return pt2.Format(TimeFormat)
+		return pt2.Format(internal.TimeFormat)
 	}
 }
 
-// Count violations for a scan, param vcm is a pointer to the ViolationCountMap defined in the AccumulatorBase struct
 func violationCount(scan ScanRow, vcm *map[string]uint8) {
-	if scan.Sn.Value >= MetalPolicy.SnViolation {
+	if scan.Sn.Value >= internal.MetalPolicy.SnViolation {
 		(*vcm)["Sn"] += 1
 	}
 
-	if scan.Cu.Value >= MetalPolicy.CuViolation {
+	if scan.Cu.Value >= internal.MetalPolicy.CuViolation {
 		(*vcm)["Cu"] += 1
 	}
 
-	if scan.Zn.Value >= MetalPolicy.ZnViolation {
+	if scan.Zn.Value >= internal.MetalPolicy.ZnViolation {
 		(*vcm)["Zn"] += 1
 	}
 
-	if scan.Pb.Value >= MetalPolicy.PbViolation {
+	if scan.Pb.Value >= internal.MetalPolicy.PbViolation {
 		(*vcm)["Pb"] += 1
 	}
 }
