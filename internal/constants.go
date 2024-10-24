@@ -19,6 +19,7 @@ var MetalPolicy metalPolicy = metalPolicy{
 }
 
 const (
-	TimeFormat           string  = "2006-01-02 15:04" // Global time format used in the project, the csv and xls files have different formats
-	ValidMinimumScanTime float32 = 20                 // Minimum time for a scan to be valid
+	TimeFormat               string  = "2006-01-02 15:04" // Standardised time format
+	ValidMinimumScanTime     float32 = 20                 // Minimum time for a scan to be valid
+	ExpectedAmmountOfColumns int     = 21                 // Expected ammoud of colums when parsing either csv or excel files
 )
