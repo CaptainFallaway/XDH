@@ -1,30 +1,20 @@
 package internal
 
-import (
-	"errors"
-	"strconv"
-	"time"
-
-	"github.com/ijt/go-anytime"
-)
-
-// A grouping is a colletion of info and scans for a specific boat
+// Grouping is a collection of info and scans for a specific boat
 type Grouping struct {
-	Index        int              `json:"index"`
+	Index        int              `json:"index"` // A index to help with the sorting, represent on a abstract basis what rows where read
 	BoatID       string           `json:"boatID"`
 	FirstDate    Date             `json:"firstDate"`
 	LastDate     Date             `json:"lastDate"`
-	Unit         string           `json:"unit"`
-	Scans        []ScanRow        `json:"scans"`
-	InvalidScans []ScanRow        `json:"invalidScans"`
-	ErrorNotes   []string         `json:"errorNotes"`
-	Violations   map[string]uint8 `json:"violations"`
-	Operators    []string         `json:"operators"`
+	Unit         string           `json:"unit"`         // The unit that is used for the metal values
+	Scans        []ScanRow        `json:"scans"`        // Valid scans that fall above the minimum scan time
+	InvalidScans []ScanRow        `json:"invalidScans"` // Scans that fall under the minimum scan time
+	ErrorNotes   []string         `json:"errorNotes"`   // Notes that are accumulator during build of grouping, like if there is less than 8 scans
+	Violations   map[string]uint8 `json:"violations"`   // A violation count map, it is used for sorting based on metal violations
+	Operators    []string         `json:"operators"`    // The operators that were found in the scans for this boat
 }
 
-// Index,Reading No,Time,Type,Duration,Units,Sigma Value,Sequence,User1,Flags,Boat,Operator,User Login,Pb,Pb Error,Hg,Hg Error,W,W Error,Rb,Rb Error,Se,Se Error,Zn,Zn Error,Ag,Ag Error,Bk1,Bk1 Error,Mo,Mo Error,Sr,Sr Error,As,As Error,Cu,Cu Error,Ni,Ni Error,Fe,Fe Error,Cr,Cr Error,Bk2,Bk2 Error,Bk3,Bk3 Error,Bk4,Bk4 Error,Sn,Sn Error,
-// This is data we might care about, in most cases it'll not be all.
-// The fields of this struct might also change in the future since we might not care about some values anymore...
+// ScanRow These are the values we care about in the csv and excel files, most of them are only here for future implementations
 type ScanRow struct {
 	Index      uint16  `csv:"Index" json:"index"`
 	Reading    uint16  `csv:"Reading No" json:"reading"`
@@ -50,63 +40,14 @@ type ScanRow struct {
 	SnError float64    `csv:"Sn Error" json:"snError"`
 }
 
+// There are Unmarshal and Marshal functions in impl file
+
 type MetalValue struct {
 	Value float64 `json:"value"`
 	IsLod bool    `json:"isLod"`
 }
 
-func (n *MetalValue) UnmarshalCSV(val string) (err error) {
-	if val, err := strconv.ParseFloat(val, 64); err == nil {
-		n.Value = val
-		n.IsLod = false
-	} else {
-		n.IsLod = true
-	}
-	return err
-}
-
-func (n *MetalValue) MarshalCSV() (string, error) {
-	panic("not implemented")
-}
-
 type Date struct {
-	Str  string
-	Time int64
-}
-
-func parseTime(out *time.Time, val string) error {
-	var (
-		err1 error
-		err2 error
-	)
-
-	(*out), err1 = anytime.Parse(val, time.Time{})
-
-	if err1 != nil {
-		(*out), err2 = time.Parse("1/2/06 15:04", val)
-
-		if err2 != nil {
-			return errors.Join(err1, err2)
-		}
-	}
-
-	return nil
-}
-
-func (n *Date) UnmarshalCSV(val string) (err error) {
-	temp := new(time.Time)
-
-	err = parseTime(temp, val)
-	if err != nil {
-		return err
-	}
-
-	n.Time = temp.Unix()
-	n.Str = temp.Format(TimeFormat)
-
-	return nil
-}
-
-func (n *Date) MarshalCSV() (string, error) {
-	panic("not implemented")
+	Text string `json:"text"`
+	Unix int64  `json:"unix"`
 }

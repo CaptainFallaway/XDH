@@ -1,23 +1,16 @@
 <script lang="ts">
-    import { cubicOut } from "svelte/easing";
-    import { fly, slide, fade } from "svelte/transition";
+    import { fly, fade } from "svelte/transition";
 
-    import { toggleValue } from "$lib/stores.ts";
+    import { toggleValue } from "$lib/globalstores";
     // import { Badge } from "$lib/components/ui/badge/";
     import { Separator } from "$lib/components/ui/separator";
     import Info from "$lib/Info.svelte";
-    import * as Tabs from "$lib/components/ui/tabs/index.ts";
-    import Table from "$lib/Table.svelte";
     import { ChevronUp, ChevronDown } from "lucide-svelte";
-    import { data_pipeline } from "./wailsjs/go/models";
+    import ModelExpanded from "./ModelExpanded.svelte";
+    import { internal } from "./wailsjs/go/models";
 
     export let id = "0";
-    export let model: data_pipeline.Grouping;
-
-    const expandMotion = {
-        duration: 500,
-        easing: cubicOut,
-    };
+    export let model: internal.Grouping;
 
     // let status;
     let statusColor;
@@ -66,10 +59,10 @@
     class="border-2 rounded-lg right-0 left-0 m-5 content-center shadow-xl border-l-4 border-l-{statusColor}-500"
 >
     <div aria-label="info" class="flex gap-10 m-8 content-center">
-        <Info top="Boat ID" bottom={model.boatID} />
-        <Info top="Operators" bottom={model.operators.join(", ")} />
-        <Info top="First Date" bottom={model.firstDate} />
-        <Info top="Last Date" bottom={model.lastDate} />
+        <Info top="Båt ID" bottom={model.boatID} />
+        <Info top="Mätförättare" bottom={model.operators.join(", ")} />
+        <Info top="Förta Tid" bottom={model.firstDate.text} />
+        <Info top="Sista Tid" bottom={model.lastDate.text} />
         <div class="w-full flex items-center justify-end">
             {#if show}
                 <div in:fade|global>
@@ -84,53 +77,6 @@
     </div>
     {#if show}
         <Separator />
-        <div
-            class="m-2 flex cursor-default"
-            transition:slide|global={{ ...expandMotion }}
-            on:click|stopPropagation
-            on:keydown|stopPropagation
-            role="button"
-            tabindex="0"
-        >
-            <div class="w-full mx-5 mb-5 flex flex-col" transition:fade|global>
-                <div class="w-full flex content-center justify-center gap-8">
-                    <Info
-                        top="Violations"
-                        bottom={model.violations[$toggleValue]}
-                    />
-                    <Info
-                        top="Scans"
-                        bottom={model.scans != null ? model.scans.length : 0}
-                    />
-                    <Info
-                        top="Invalid Scans"
-                        bottom={model.invalidScans != null
-                            ? model.invalidScans.length
-                            : 0}
-                    />
-                    <Info top="Notes" bottom={model.errorNotes} />
-                </div>
-                <Tabs.Root bind:value={tabValue} class="w-full">
-                    <Tabs.List>
-                        <Tabs.Trigger value="Valid">Valid</Tabs.Trigger>
-                        <Tabs.Trigger value="Invalid">Invalid</Tabs.Trigger>
-                    </Tabs.List>
-                    <Tabs.Content value="Valid">
-                        {#key tabValue}
-                            <div in:fade|global>
-                                <Table scans={model.scans} />
-                            </div>
-                        {/key}
-                    </Tabs.Content>
-                    <Tabs.Content value="Invalid">
-                        {#key tabValue}
-                            <div in:fade|global>
-                                <Table scans={model.invalidScans} />
-                            </div>
-                        {/key}
-                    </Tabs.Content>
-                </Tabs.Root>
-            </div>
-        </div>
+        <ModelExpanded {model}/>
     {/if}
 </div>

@@ -1,0 +1,185 @@
+package templates
+
+templ Report() {
+    @layout() {
+    <div class="container">
+        <div class="content">
+            <div class="info-card">
+                <h2>Boat Information</h2>
+                <div class="info-item">
+                    <span class="info-label">Boat Owner's Name:</span>
+                    <span id="ownerName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Boat Manufacturer:</span>
+                    <span id="manufacturer"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Skrov- och/eller segelnr:</span>
+                    <span id="hullSailNumber"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Other Identification:</span>
+                    <span id="otherIdentification"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Boat Name:</span>
+                    <span id="boatName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Boat Model:</span>
+                    <span id="boatModel"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Manufacturing Year:</span>
+                    <span id="manufacturingYear"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Hull Material:</span>
+                    <span id="hullMaterial" class="highlight"></span>
+                </div>
+            </div>
+            <div class="measure-point">
+                <h2>Measure Point</h2>
+                <img id="measurePointImage" src="" alt="Measure Point Image">
+            </div>
+            <div class="data-table">
+                <h2>Measurement Data</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Mätpunkt</th>
+                            <th rowspan="2">Mätningens ID (#)</th>
+                            <th rowspan="2">Bly (Pb)</th>
+                            <th rowspan="2">Zink (Zn)</th>
+                            <th rowspan="2">Koppar (Cu)</th>
+                            <th rowspan="2">Tenn (Sn)</th>
+                            <th colspan="3">Kontrollmätning Tenn*</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Fribord</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Medelvärde</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="note">
+                    *Kontrollmätning av tenn görs inom en radie på 10 cm om samtliga mätvärden i mätpunkterna 1-8 överstiger 100 μg/cm². Se sida 2 för bedömningsgrund.
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+}

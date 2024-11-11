@@ -3,44 +3,53 @@ package app
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 
-	data_pipeline "github.com/CaptainFallaway/XDH/internal/providers"
-
-	"sync"
+	"github.com/CaptainFallaway/XDH/internal"
+	"github.com/CaptainFallaway/XDH/internal/grouping"
+	"github.com/CaptainFallaway/XDH/internal/parsers"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+
+	"sync"
 )
 
 type App struct {
 	Mux       sync.Mutex
 	Ctx       context.Context
-	Groupings []data_pipeline.Grouping
+	Groupings []internal.Grouping
 }
 
 func NewApp() *App {
 	return &App{}
 }
 
-func (app *App) Startup(ctx context.Context) {
+// OnStartup Retrieves the wails runtime context for wails runtime methods
+func (app *App) OnStartup(ctx context.Context) {
 	app.Ctx = ctx
 }
 
 func (app *App) loadScans(path string) error {
 	var (
 		err   error
-		scans []data_pipeline.ScanRow
+		scans *[]internal.ScanRow
 	)
 
 	if strings.HasSuffix(path, ".csv") {
-		scans, err = data_pipeline.ParseCsv(path)
+		scans, err = parsers.ParseCsvFile(path)
 	} else if strings.HasSuffix(path, ".xlsx") || strings.HasSuffix(path, ".xls") {
-		scans, err = data_pipeline.ParseExcel(path)
+		scans, err = parsers.ParseExcelFile(path)
 	} else {
 		return fmt.Errorf("invalid file type")
 	}
 
-	app.Groupings = data_pipeline.MakeBoatGroupings(&scans)
+	if err != nil {
+		log.Println(err)
+		panic("here is johnny")
+	}
+
+	app.Groupings = grouping.MakeBoatGroupings(scans)
 
 	return err
 }
@@ -65,15 +74,15 @@ func (app *App) OpenFileDialog() {
 
 	if err != nil {
 		// Make some event thing for toasts on the frontend to display errors
-		fmt.Printf("Error loading file: %s \n", err.Error())
+		log.Printf("Error loading file: %s \n", err)
 		return
 	}
 }
 
-func (app *App) GetModels(sortingMetal string) []data_pipeline.Grouping {
+func (app *App) GetModels(sortingMetal string) []internal.Grouping {
 	app.Mux.Lock()
 	defer app.Mux.Unlock()
 
-	data_pipeline.SortByViolations(&app.Groupings, sortingMetal)
+	internal.SortByViolations(&app.Groupings, sortingMetal)
 	return app.Groupings
 }

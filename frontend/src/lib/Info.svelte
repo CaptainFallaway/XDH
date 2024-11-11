@@ -9,7 +9,7 @@
 </script>
 
 <div class="{classes} justify-start flex flex-col whitespace-nowrap">
-    <span class="top">{top}</span>
+    <span class="top select-none">{top}</span>
     <span>{bottom}</span>
 </div>
 

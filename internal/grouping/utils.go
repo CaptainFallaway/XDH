@@ -36,7 +36,6 @@ func newIndexer() *indexer {
 	return &indexer{Indexes: make(map[string]int)}
 }
 
-// Add a index for a value.
 func (i *indexer) AddIndexFor(val string) {
 	if _, exists := i.Indexes[val]; !exists {
 		i.Indexes[val] = len(i.Indexes)
@@ -46,11 +45,11 @@ func (i *indexer) AddIndexFor(val string) {
 // Returns earliest time
 func compareEarliestTimes(t1, t2 internal.Date) internal.Date {
 	// Since it'll be 0 because it's a zeroed date at first
-	if t1.Time == 0 {
+	if t1.Unix == 0 {
 		return t2
 	}
 
-	if t1.Time < t2.Time {
+	if t1.Unix < t2.Unix {
 		return t1
 	} else {
 		return t2
@@ -59,13 +58,14 @@ func compareEarliestTimes(t1, t2 internal.Date) internal.Date {
 
 // Returns latest time
 func compareLatestTimes(t1, t2 internal.Date) internal.Date {
-	if t1.Time > t2.Time {
+	if t1.Unix > t2.Unix {
 		return t1
 	} else {
 		return t2
 	}
 }
 
+// VCM being the violation count map of the grouping
 func violationCount(scan internal.ScanRow, vcm *map[string]uint8) {
 	if scan.Sn.Value >= internal.MetalPolicy.SnViolation {
 		(*vcm)["Sn"] += 1

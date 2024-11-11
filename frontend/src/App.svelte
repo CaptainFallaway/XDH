@@ -1,20 +1,25 @@
 <script lang="ts">
+	import { internal } from './lib/wailsjs/go/models.ts';
     import "./app.css";
 
+    import { toast } from "svelte-sonner";
+
     import { ModeWatcher, mode } from "mode-watcher";
-    import { toggleValue } from "$lib/stores.ts";
+    import { toggleValue } from "$lib/globalstores";
 
     import Model from "$lib/Model.svelte";
     import MenuBar from "$lib/MenuBar.svelte";
 
     import * as app from "$lib/wailsjs/go/app/App.js";
 
-    async function getModels(togglevalue: string) {
+    async function getModels(togglevalue: string): Promise<internal.Grouping[]> {
         if (togglevalue === "") {
             return [];
         }
 
         const models = await app.GetModels(togglevalue);
+
+        window["a"] = models
 
         return models == null ? [] : models;
     }

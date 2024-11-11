@@ -4,12 +4,12 @@
     "baseUrl": ".",
     "paths": {
       "$lib": ["./src/lib"],
-      "$lib/*": ["./src/lib/*"]
+      "$lib/*": ["./src/lib/*"],
+      "*": ["node_modules/*"]
     },
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "resolveJsonModule": true,
     "declaration": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
@@ -30,6 +30,6 @@
     "src/**/*.svelte",
     "src/lib/stores.ys"
   ],
-  "files": []
+  // "files": []
   // "references": [{ "path": "./tsconfig.node.json" }]
 }

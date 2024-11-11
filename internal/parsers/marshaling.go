@@ -2,28 +2,52 @@ package parsers
 
 import (
 	"fmt"
+	"github.com/xuri/excelize/v2"
+	"log"
 	"strings"
 
 	"github.com/CaptainFallaway/XDH/internal"
-	"github.com/gocarina/gocsv"
 )
 
-// Helper function for parsing the excel file
-func marshalRow(row *[]string, header *[]string) (internal.ScanRow, error) {
-	rowCsv := strings.Join(*header, ",") + "\n" + strings.Join(*row, ",")
-
-	scan := make([]internal.ScanRow, 0, 1)
-
-	err := gocsv.UnmarshalString(rowCsv, &scan)
+// readExcel reads an Excel file and converts it to a CSV string
+func readExcel(filename string) (string, error) {
+	f, err := excelize.OpenFile(filename)
 	if err != nil {
-		return internal.ScanRow{}, err
+		return "", err
 	}
 
-	if len(scan) == 0 {
-		return internal.ScanRow{}, fmt.Errorf("scan could not be loaded")
+	sheets := f.GetSheetList()
+	if len(sheets) == 0 {
+		return "", fmt.Errorf("no sheets found in excel document")
 	}
 
-	scanRow := scan[0]
+	rows, err := f.Rows(sheets[0])
+	if err != nil {
+		return "", err
+	}
 
-	return scanRow, nil
+	defer func(rows *excelize.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Printf("error closing rows: %s", err)
+		}
+	}(rows)
+
+	sb := strings.Builder{}
+
+	for i := 0; rows.Next(); i++ {
+		row, err := rows.Columns()
+		if err != nil {
+			return "", fmt.Errorf("error parsing excel row %d: %s", i, err)
+		}
+
+		// TODO add warnings for this
+		if len(row) < internal.ExpectedAmmountOfColumns {
+			continue
+		}
+
+		sb.WriteString(fmt.Sprintf("%s\n", strings.Join(row, ",")))
+	}
+
+	return sb.String(), nil
 }

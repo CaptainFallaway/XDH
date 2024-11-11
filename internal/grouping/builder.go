@@ -41,11 +41,11 @@ func (a *groupingBuilder) AppendScan(scan internal.ScanRow) {
 	}
 }
 
-func (a *groupingBuilder) AddErrorNote(err string) {
-	a.ErrorNotes = append(a.ErrorNotes, err)
+func (a *groupingBuilder) AddErrorNote(err string, args ...any) {
+	a.ErrorNotes = append(a.ErrorNotes, fmt.Sprintf(err, args...))
 }
 
-func (a *groupingBuilder) JustifyEarilestTime(time internal.Date) {
+func (a *groupingBuilder) JustifyEarliestTime(time internal.Date) {
 	a.FirstDate = compareEarliestTimes(a.FirstDate, time)
 }
 
@@ -57,7 +57,9 @@ func (a *groupingBuilder) CountViolations(scan internal.ScanRow) {
 	violationCount(scan, &a.ViolationCountMap)
 }
 
-func (a *groupingBuilder) GetUnit() string {
+// These functions below are specific since they will add warnings for the operator
+// To keep note of when we are now building the grouping
+func (a *groupingBuilder) getUnit() string {
 	units := a.UnitSet.ToSlice()
 
 	if len(units) > 1 {
@@ -67,13 +69,21 @@ func (a *groupingBuilder) GetUnit() string {
 	return units[0]
 }
 
-func (a groupingBuilder) BuildGrouping(index int) internal.Grouping {
+func (a *groupingBuilder) getValidScans() []internal.ScanRow {
+	if len(a.Scans) < internal.MinimumAmmoutOfScans {
+		a.AddErrorNote("Mindre än %d giltig scanner", internal.MinimumAmmoutOfScans)
+	}
+
+	return a.Scans
+}
+
+func (a *groupingBuilder) BuildGrouping(index int) internal.Grouping {
 	return internal.Grouping{
 		Index:        index,
 		FirstDate:    a.FirstDate,
 		LastDate:     a.LastDate,
-		Unit:         a.GetUnit(),
-		Scans:        a.Scans,
+		Unit:         a.getUnit(),
+		Scans:        a.getValidScans(),
 		InvalidScans: a.InvalidScans,
 		ErrorNotes:   a.ErrorNotes,
 		Violations:   a.ViolationCountMap,

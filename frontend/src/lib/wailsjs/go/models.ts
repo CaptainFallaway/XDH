@@ -1,5 +1,19 @@
-export namespace data_pipeline {
+export namespace internal {
 	
+	export class Date {
+	    text: string;
+	    unix: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Date(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.text = source["text"];
+	        this.unix = source["unix"];
+	    }
+	}
 	export class MetalValue {
 	    value: number;
 	    isLod: boolean;
@@ -17,7 +31,7 @@ export namespace data_pipeline {
 	export class ScanRow {
 	    index: number;
 	    reading: number;
-	    time: string;
+	    time: Date;
 	    type: string;
 	    duration: number;
 	    unit: string;
@@ -45,7 +59,7 @@ export namespace data_pipeline {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.index = source["index"];
 	        this.reading = source["reading"];
-	        this.time = source["time"];
+	        this.time = this.convertValues(source["time"], Date);
 	        this.type = source["type"];
 	        this.duration = source["duration"];
 	        this.unit = source["unit"];
@@ -86,14 +100,14 @@ export namespace data_pipeline {
 	}
 	export class Grouping {
 	    index: number;
-	    firstDate: string;
-	    lastDate: string;
+	    boatID: string;
+	    firstDate: Date;
+	    lastDate: Date;
 	    unit: string;
 	    scans: ScanRow[];
 	    invalidScans: ScanRow[];
 	    errorNotes: string[];
 	    violations: {[key: string]: number};
-	    boatID: string;
 	    operators: string[];
 	
 	    static createFrom(source: any = {}) {
@@ -103,14 +117,14 @@ export namespace data_pipeline {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.index = source["index"];
-	        this.firstDate = source["firstDate"];
-	        this.lastDate = source["lastDate"];
+	        this.boatID = source["boatID"];
+	        this.firstDate = this.convertValues(source["firstDate"], Date);
+	        this.lastDate = this.convertValues(source["lastDate"], Date);
 	        this.unit = source["unit"];
 	        this.scans = this.convertValues(source["scans"], ScanRow);
 	        this.invalidScans = this.convertValues(source["invalidScans"], ScanRow);
 	        this.errorNotes = source["errorNotes"];
 	        this.violations = source["violations"];
-	        this.boatID = source["boatID"];
 	        this.operators = source["operators"];
 	    }
 	

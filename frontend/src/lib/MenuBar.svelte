@@ -1,34 +1,28 @@
 <script lang="ts">
-    import { Button } from "$lib/components/ui/button";
+    import Tooltip from "./Tooltip.svelte";
     import * as Tabs from "$lib/components/ui/tabs/index.ts";
 
-    import Dropdown from "$lib/Dropdown.svelte";
+    import SessionsSheet from "$lib/SessionsSheet.svelte";
+    import Profile from "$lib/Profile.svelte"
 
-    import * as app from "$lib/wailsjs/go/app/App.js";
-
-    import { toggleValue } from "$lib/stores.ts";
-
-    function openFileDialog() {
-        app.OpenFileDialog()
-        const temp = $toggleValue
-        $toggleValue = ""
-        $toggleValue = temp
-    }
+    import { toggleValue } from "$lib/globalstores";
 </script>
 
 <div class="flex flex-row right-0 left-0 m-5">
-    <div class="basis-1/2 text-left place-items-center">
-        <Tabs.Root bind:value={$toggleValue} class="justify-start">
-            <Tabs.List class="shadow-xl">
-                <Tabs.Trigger value="Sn">Sn</Tabs.Trigger>
-                <Tabs.Trigger value="Pb">Pb</Tabs.Trigger>
-                <!-- <Tabs.Trigger value="Cu">Cu</Tabs.Trigger>
-                <Tabs.Trigger value="Zn">Zn</Tabs.Trigger> -->
-            </Tabs.List>
-        </Tabs.Root>
+    <div class="basis-1/2 text-left flex gap-1">
+        <SessionsSheet /> 
+        <Profile />
     </div>
-    <div class="basis-1/2 flex gap-1 justify-end">
-        <Button on:click={openFileDialog} class="shadow-xl">Open File</Button>
-        <Dropdown />
+    <div class="basis-1/2 flex justify-end">
+        <Tooltip tip="Vilken metall som skall sorteras med">
+            <Tabs.Root bind:value={$toggleValue} class="justify-start">
+                <Tabs.List class="shadow-xl">
+                    <Tabs.Trigger value="Sn">Tenn</Tabs.Trigger>
+                    <Tabs.Trigger value="Pb">Bly</Tabs.Trigger>
+                    <!-- <Tabs.Trigger value="Cu">Cu</Tabs.Trigger>
+                    <Tabs.Trigger value="Zn">Zn</Tabs.Trigger> -->
+                </Tabs.List>
+            </Tabs.Root>
+        </Tooltip>
     </div>
 </div>
