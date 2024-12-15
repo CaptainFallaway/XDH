@@ -2,13 +2,13 @@
 	import { internal } from './lib/wailsjs/go/models.ts';
     import "./app.css";
 
-    import { toast } from "svelte-sonner";
-
     import { ModeWatcher, mode } from "mode-watcher";
     import { toggleValue } from "$lib/globalstores";
+    import * as _ from "$lib/events.ts";
 
-    import Model from "$lib/Model.svelte";
-    import MenuBar from "$lib/MenuBar.svelte";
+    import Model from "$lib/components/Model.svelte";
+    import MenuBar from "$lib/components/MenuBar.svelte";
+    import {Button} from "$lib/components/ui/button";
 
     import * as app from "$lib/wailsjs/go/app/App.js";
 
@@ -18,8 +18,6 @@
         }
 
         const models = await app.GetModels(togglevalue);
-
-        window["a"] = models
 
         return models == null ? [] : models;
     }

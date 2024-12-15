@@ -1,11 +1,11 @@
 <script lang="ts">
     import { slide, fade } from "svelte/transition";
-    import * as Tabs from "$lib/components/ui/tabs/index.ts";
-    import Table from "$lib/Table.svelte";
+    import * as Tabs from "$lib/components/ui/tabs";
+    import Table from "$lib/components/Table.svelte";
     import { cubicOut } from "svelte/easing";
-    import Info from "$lib/Info.svelte";
-    import { toggleValue } from "$lib/globalstores";
-    import { internal } from "./wailsjs/go/models";
+    import Info from "$lib/components/Info.svelte";
+    import { toggleValue } from "$lib/globalstores.ts";
+    import { internal } from "../wailsjs/go/models.ts";
 
     export let model: internal.Grouping
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as Sheet from "$lib/components/ui/sheet";
-    import ScrollArea from "./components/ui/scroll-area/scroll-area.svelte";
+    import ScrollArea from "./ui/scroll-area/scroll-area.svelte";
     import { Button } from "$lib/components/ui/button";
     import { PanelLeft } from "lucide-svelte";
     import * as Tabs from "$lib/components/ui/tabs";
@@ -15,7 +15,7 @@
         _mode = value;
     });
 
-    import { toggleValue } from "$lib/globalstores";
+    import { toggleValue } from "$lib/globalstores.ts";
 
     function openFileDialog() {
       app.OpenFileDialog()

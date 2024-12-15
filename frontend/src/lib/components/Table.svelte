@@ -1,6 +1,6 @@
 <script lang="ts">
-    import * as Table from "$lib/components/ui/table/index.ts";
-    import { internal } from "$lib/wailsjs/go/models";
+    import * as Table from "$lib/components/ui/table";
+    import { internal } from "$lib/wailsjs/go/models.ts";
 
     export let scans: Array<internal.ScanRow>;
 

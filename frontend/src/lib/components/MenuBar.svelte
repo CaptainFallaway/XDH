@@ -1,11 +1,11 @@
 <script lang="ts">
     import Tooltip from "./Tooltip.svelte";
-    import * as Tabs from "$lib/components/ui/tabs/index.ts";
+    import * as Tabs from "$lib/components/ui/tabs";
 
-    import SessionsSheet from "$lib/SessionsSheet.svelte";
-    import Profile from "$lib/Profile.svelte"
+    import SessionsSheet from "$lib/components/SessionsSheet.svelte";
+    import Profile from "$lib/components/Profile.svelte"
 
-    import { toggleValue } from "$lib/globalstores";
+    import { toggleValue } from "$lib/globalstores.ts";
 </script>
 
 <div class="flex flex-row right-0 left-0 m-5">

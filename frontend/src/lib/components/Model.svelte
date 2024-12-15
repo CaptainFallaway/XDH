@@ -1,19 +1,19 @@
 <script lang="ts">
     import { fly, fade } from "svelte/transition";
 
-    import { toggleValue } from "$lib/globalstores";
+    import { toggleValue } from "$lib/globalstores.ts";
     // import { Badge } from "$lib/components/ui/badge/";
     import { Separator } from "$lib/components/ui/separator";
-    import Info from "$lib/Info.svelte";
+    import Info from "$lib/components/Info.svelte";
     import { ChevronUp, ChevronDown } from "lucide-svelte";
     import ModelExpanded from "./ModelExpanded.svelte";
-    import { internal } from "./wailsjs/go/models";
+    import { internal } from "../wailsjs/go/models.ts";
 
     export let id = "0";
     export let model: internal.Grouping;
 
     // let status;
-    let statusColor;
+    let statusColor: string;
 
     switch (model.violations[$toggleValue]) {
         case 0:
