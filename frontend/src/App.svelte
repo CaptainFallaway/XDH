@@ -1,85 +1,46 @@
 <script lang="ts">
-	import { internal } from './lib/wailsjs/go/models.ts';
-    import "./app.css";
-
-    import { ModeWatcher, mode } from "mode-watcher";
-    import { toggleValue } from "$lib/globalstores";
-    import * as _ from "$lib/events.ts";
-
-    import Model from "$lib/components/Model.svelte";
-    import MenuBar from "$lib/components/MenuBar.svelte";
-    import {Button} from "$lib/components/ui/button";
-
-    import * as app from "$lib/wailsjs/go/app/App.js";
-
-    async function getModels(togglevalue: string): Promise<internal.Grouping[]> {
-        if (togglevalue === "") {
-            return [];
-        }
-
-        const models = await app.GetModels(togglevalue);
-
-        return models == null ? [] : models;
-    }
+  import svelteLogo from './assets/svelte.svg'
+  import Counter from './lib/Counter.svelte'
 </script>
 
-<ModeWatcher />
+<main>
+  <img src="/vite-deno.svg" alt="Vite with Deno" />
+  <div>
+    <a href="https://vite.dev" target="_blank" rel="noreferrer"> 
+      <img src="/vite.svg" class="logo" alt="Vite Logo" />
+    </a>
+    <a href="https://svelte.dev" target="_blank" rel="noreferrer"> 
+      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
+    </a>
+  </div>
+  <h1>Vite + Svelte</h1>
 
-<MenuBar />
+  <div class="card">
+    <Counter />
+  </div>
 
-{#await getModels($toggleValue)}
-    <div
-        style="--main: var(--{$mode}-main); --secon: var(--{$mode}-secon)"
-        class="w-full h-screen flex justify-center"
-    >
-        <div class="loader m-auto bottom-[80px]"></div>
-    </div>
-{:then modelList}
-    {#each modelList as model}
-        <Model id={model.index.toString()} {model} />
-    {/each}
-{:catch error}
-    <p>{error.message}</p>
-{/await}
+  <p>
+    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
+  </p>
+
+  <p class="read-the-docs">
+    Click on the Vite and Svelte logos to learn more
+  </p>
+</main>
 
 <style>
-    :root {
-        --dark-main: #fff;
-        --dark-secon: #fff2;
-        --light-main: #000;
-        --light-secon: #0002;
-    }
-
-    .loader {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background-color: var(--main);
-        box-shadow:
-            32px 0 var(--main),
-            -32px 0 var(--main);
-        position: relative;
-        animation: flash 0.5s ease-out infinite alternate;
-    }
-
-    @keyframes flash {
-        0% {
-            background-color: var(--secon);
-            box-shadow:
-                32px 0 var(--secon),
-                -32px 0 var(--main);
-        }
-        50% {
-            background-color: var(--main);
-            box-shadow:
-                32px 0 var(--secon),
-                -32px 0 var(--secon);
-        }
-        100% {
-            background-color: var(--secon);
-            box-shadow:
-                32px 0 var(--main),
-                -32px 0 var(--secon);
-        }
-    }
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.svelte:hover {
+    filter: drop-shadow(0 0 2em #ff3e00aa);
+  }
+  .read-the-docs {
+    color: #888;
+  }
 </style>
