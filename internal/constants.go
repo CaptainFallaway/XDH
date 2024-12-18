@@ -20,7 +20,7 @@ var MetalPolicy metalPolicy = metalPolicy{
 
 const (
 	TimeFormat               string  = "2006-01-02 15:04" // Standardised time format
-	ValidMinimumScanTime     float32 = 20                 // Minimum time for a scan to be valid
+	ValidMinimumScanTime     float64 = 20                 // Minimum time for a scan to be valid
 	ExpectedAmmountOfColumns int     = 21                 // Expected ammoud of colums when parsing either csv or excel files
 	MinimumAmmoutOfScans     int     = 8
 )

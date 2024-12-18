@@ -4,6 +4,7 @@ import (
 	"embed"
 
 	"github.com/CaptainFallaway/XDH/internal/app"
+	"github.com/adrg/xdg"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -14,7 +15,7 @@ import (
 var assets embed.FS
 
 func main() {
-	app := app.NewApp()
+	app := app.NewApp(xdg.DataHome)
 
 	err := wails.Run(&options.App{
 		Title:     "XDH",

@@ -2,87 +2,72 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"strings"
 
 	"github.com/CaptainFallaway/XDH/internal"
-	"github.com/CaptainFallaway/XDH/internal/grouping"
-	"github.com/CaptainFallaway/XDH/internal/parsers"
-
+	"github.com/CaptainFallaway/XDH/internal/storage"
+	"github.com/google/uuid"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"sync"
 )
 
+var dialogOptions = runtime.OpenDialogOptions{
+	ShowHiddenFiles: true,
+	Filters: []runtime.FileFilter{
+		{
+			DisplayName: "Excel or Csv files",
+			Pattern:     "*.xlsx;*.xls;*.csv",
+		},
+	},
+}
+
 type App struct {
-	Mux       sync.Mutex
-	Ctx       context.Context
+	Mux sync.Mutex
+	Ctx context.Context
+
+	SessionStorage storage.StorageService
+
 	Groupings []internal.Grouping
+	Session   internal.Session
 }
 
-func NewApp() *App {
-	return &App{}
+func NewApp(dataDir string) *App {
+	store := Must(storage.NewStorageService(dataDir))
+
+	return &App{
+		SessionStorage: store,
+	}
 }
 
-// OnStartup Retrieves the wails runtime context for wails runtime methods
+// Wails specific context retrieval
 func (app *App) OnStartup(ctx context.Context) {
 	app.Ctx = ctx
 }
 
-func (app *App) loadScans(path string) error {
-	var (
-		err   error
-		scans *[]internal.ScanRow
-	)
-
-	if strings.HasSuffix(path, ".csv") {
-		scans, err = parsers.ParseCsvFile(path)
-	} else if strings.HasSuffix(path, ".xlsx") || strings.HasSuffix(path, ".xls") {
-		scans, err = parsers.ParseExcelFile(path)
-	} else {
-		return fmt.Errorf("invalid file type")
-	}
-
+// Must provides a centralized way of handling critical calls
+// This way i can much easier create error messages. As an example
+// If the storage does not want to instantiate, or we get some weird uuid error.
+func Must[T any](val T, err error) T {
 	if err != nil {
-		log.Println(err)
-		panic("here is johnny")
+		log.Fatal(err)
 	}
-
-	app.Groupings = grouping.MakeBoatGroupings(scans)
-
-	return err
+	return val
 }
 
-func (app *App) OpenFileDialog() {
-	app.Mux.Lock()
-	defer app.Mux.Unlock()
-
-	path, err := runtime.OpenFileDialog(app.Ctx, dialogOptions)
-
-	if err != nil {
-		// Make some event thing for toasts on the frontend to display errors
-		fmt.Printf("Error opening file: %s \n", err.Error())
-		return
-	}
-
-	if path == "" {
-		return
-	}
-
-	err = app.loadScans(path)
-
-	if err != nil {
-		// Make some event thing for toasts on the frontend to display errors
-		log.Printf("Error loading file: %s \n", err)
-		return
+// NewSession creates a empty [internal.Session] but with the uid set
+// To a new uuidV7.
+func (app *App) NewSession() internal.Session {
+	uid := Must(uuid.NewV7())
+	return internal.Session{
+		Uid: uid.String(),
 	}
 }
 
-func (app *App) GetModels(sortingMetal string) []internal.Grouping {
-	app.Mux.Lock()
-	defer app.Mux.Unlock()
+func (app *App) OpenFileDialog() string {
+	return Must(runtime.OpenFileDialog(app.Ctx, dialogOptions))
+}
 
-	internal.SortByViolations(&app.Groupings, sortingMetal)
-	return app.Groupings
+func (app *App) InitializeSession(session internal.Session, path string) []internal.Grouping {
+	return nil
 }

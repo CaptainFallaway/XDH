@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/CaptainFallaway/XDH/internal"
+	"github.com/CaptainFallaway/XDH/internal/parsers"
 )
 
 type groupingBuilder struct {
-	FirstDate         internal.Date
-	LastDate          internal.Date
-	Scans             []internal.ScanRow
-	InvalidScans      []internal.ScanRow
+	FirstDate         int64
+	LastDate          int64
+	Scans             []internal.Scan
+	InvalidScans      []internal.Scan
 	ErrorNotes        []string
 	UnitSet           set
 	ViolationCountMap map[string]uint8
@@ -33,7 +34,23 @@ func newGroupingBuilder(boatID string) *groupingBuilder {
 	}
 }
 
-func (a *groupingBuilder) AppendScan(scan internal.ScanRow) {
+// Converting parsers dto to domaing specific type
+func scanRowToScan(scan parsers.ScanRow) internal.Scan {
+	return internal.Scan{
+		Reading:  scan.Reading,
+		Duration: scan.Duration,
+		Operator: scan.Operator,
+		Date:     scan.Time.Unix,
+		Pb:       scan.Pb.Value,
+		Zn:       scan.Zn.Value,
+		Cu:       scan.Cu.Value,
+		Sn:       scan.Zn.Value,
+	}
+}
+
+func (a *groupingBuilder) AppendScan(scanRow parsers.ScanRow) {
+	scan := scanRowToScan(scanRow)
+
 	if scan.Duration < internal.ValidMinimumScanTime {
 		a.InvalidScans = append(a.InvalidScans, scan)
 	} else {
@@ -45,15 +62,15 @@ func (a *groupingBuilder) AddErrorNote(err string, args ...any) {
 	a.ErrorNotes = append(a.ErrorNotes, fmt.Sprintf(err, args...))
 }
 
-func (a *groupingBuilder) JustifyEarliestTime(time internal.Date) {
-	a.FirstDate = compareEarliestTimes(a.FirstDate, time)
+func (a *groupingBuilder) JustifyEarliestTime(time parsers.Date) {
+	a.FirstDate = compareEarliestTimes(a.FirstDate, time.Unix)
 }
 
-func (a *groupingBuilder) JustifyLatestTime(time internal.Date) {
-	a.LastDate = compareLatestTimes(a.LastDate, time)
+func (a *groupingBuilder) JustifyLatestTime(time parsers.Date) {
+	a.LastDate = compareLatestTimes(a.LastDate, time.Unix)
 }
 
-func (a *groupingBuilder) CountViolations(scan internal.ScanRow) {
+func (a *groupingBuilder) CountViolations(scan parsers.ScanRow) {
 	violationCount(scan, &a.ViolationCountMap)
 }
 
@@ -69,7 +86,7 @@ func (a *groupingBuilder) getUnit() string {
 	return units[0]
 }
 
-func (a *groupingBuilder) getValidScans() []internal.ScanRow {
+func (a *groupingBuilder) getValidScans() []internal.Scan {
 	if len(a.Scans) < internal.MinimumAmmoutOfScans {
 		a.AddErrorNote("Mindre än %d giltig scanner", internal.MinimumAmmoutOfScans)
 	}

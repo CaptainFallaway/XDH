@@ -2,18 +2,18 @@ package parsers
 
 import (
 	"fmt"
-	"github.com/CaptainFallaway/XDH/internal"
-	"github.com/gocarina/gocsv"
 	"os"
+
+	"github.com/gocarina/gocsv"
 )
 
-func ParseCsvFile(filename string) (*[]internal.ScanRow, error) {
+func ParseCsvFile(filename string) ([]ScanRow, error) {
 	content, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("os: %s", err)
 	}
 
-	scans := new([]internal.ScanRow)
+	scans := make([]ScanRow, 0)
 
 	err = gocsv.Unmarshal(content, scans)
 	if err != nil {
@@ -23,13 +23,13 @@ func ParseCsvFile(filename string) (*[]internal.ScanRow, error) {
 	return scans, nil
 }
 
-func ParseExcelFile(filename string) (*[]internal.ScanRow, error) {
-	content, err := readExcel(filename)
+func ParseExcelFile(filename string) ([]ScanRow, error) {
+	content, err := excelToCsv(filename)
 	if err != nil {
 		return nil, fmt.Errorf("readExcel: %s", err)
 	}
 
-	scans := new([]internal.ScanRow)
+	scans := make([]ScanRow, 0)
 
 	err = gocsv.UnmarshalString(content, scans)
 	if err != nil {

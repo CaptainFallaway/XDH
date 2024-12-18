@@ -2,10 +2,11 @@ package grouping
 
 import (
 	"github.com/CaptainFallaway/XDH/internal"
+	"github.com/CaptainFallaway/XDH/internal/parsers"
 )
 
-func MakeBoatGroupings(scans *[]internal.ScanRow) []internal.Grouping {
-	boatMap := make(map[string][]internal.ScanRow)
+func MakeBoatGroupings(scans *[]parsers.ScanRow) []internal.Grouping {
+	boatMap := make(map[string][]parsers.ScanRow)
 	indexer := newIndexer() // Mitigate the randomness of maps
 
 	// Pre-processing
