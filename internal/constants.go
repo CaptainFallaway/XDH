@@ -1,5 +1,7 @@
 package internal
 
+const AppName = "XDH"
+
 type metalPolicy struct {
 	AmmountOfMetals uint8
 	Metals          []string

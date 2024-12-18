@@ -2,13 +2,13 @@ package storage
 
 import "github.com/CaptainFallaway/XDH/internal"
 
-type storeObj struct {
-	Session   internal.Session
+type Session struct {
+	Session   *internal.SessionData
 	Groupings []internal.Grouping
 }
 
-func newStoreObj(session internal.Session, groupings []internal.Grouping) *storeObj {
-	return &storeObj{
+func NewStore(session *internal.SessionData, groupings []internal.Grouping) *Session {
+	return &Session{
 		Session:   session,
 		Groupings: groupings,
 	}

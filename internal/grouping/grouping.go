@@ -5,12 +5,12 @@ import (
 	"github.com/CaptainFallaway/XDH/internal/parsers"
 )
 
-func MakeBoatGroupings(scans *[]parsers.ScanRow) []internal.Grouping {
+func MakeBoatGroupings(scans []parsers.ScanRow) []internal.Grouping {
 	boatMap := make(map[string][]parsers.ScanRow)
 	indexer := newIndexer() // Mitigate the randomness of maps
 
 	// Pre-processing
-	for _, scan := range *scans {
+	for _, scan := range scans {
 		indexer.AddIndexFor(scan.Boat)
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}

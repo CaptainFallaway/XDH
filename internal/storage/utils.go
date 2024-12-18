@@ -5,7 +5,7 @@ import (
 	"encoding/gob"
 )
 
-func encodeObj(obj *storeObj) ([]byte, error) {
+func encodeObj(obj *Session) ([]byte, error) {
 	buf := &bytes.Buffer{}
 	encoder := gob.NewEncoder(buf)
 	err := encoder.Encode(obj)
@@ -15,8 +15,8 @@ func encodeObj(obj *storeObj) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func decodeObj(data []byte) (*storeObj, error) {
-	obj := new(storeObj)
+func decodeObj(data []byte) (*Session, error) {
+	obj := new(Session)
 	buf := bytes.NewBuffer(data)
 	decoder := gob.NewDecoder(buf)
 	err := decoder.Decode(obj)

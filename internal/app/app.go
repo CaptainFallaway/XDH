@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/CaptainFallaway/XDH/internal"
+	"github.com/CaptainFallaway/XDH/internal/grouping"
+	"github.com/CaptainFallaway/XDH/internal/parsers"
 	"github.com/CaptainFallaway/XDH/internal/storage"
 	"github.com/google/uuid"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -26,17 +28,16 @@ type App struct {
 	Mux sync.Mutex
 	Ctx context.Context
 
-	SessionStorage storage.StorageService
+	Storage storage.StorageService
 
-	Groupings []internal.Grouping
-	Session   internal.Session
+	Current *storage.Session
 }
 
-func NewApp(dataDir string) *App {
-	store := Must(storage.NewStorageService(dataDir))
+func NewApp() *App {
+	store := Must(storage.NewStorageService())
 
 	return &App{
-		SessionStorage: store,
+		Storage: store,
 	}
 }
 
@@ -55,19 +56,50 @@ func Must[T any](val T, err error) T {
 	return val
 }
 
-// NewSession creates a empty [internal.Session] but with the uid set
-// To a new uuidV7.
-func (app *App) NewSession() internal.Session {
-	uid := Must(uuid.NewV7())
-	return internal.Session{
-		Uid: uid.String(),
-	}
-}
-
 func (app *App) OpenFileDialog() string {
 	return Must(runtime.OpenFileDialog(app.Ctx, dialogOptions))
 }
 
-func (app *App) InitializeSession(session internal.Session, path string) []internal.Grouping {
-	return nil
+// NewSession creates a empty [internal.Session] but with the uid set
+// To a new uuidV7.
+func (app *App) NewSessionData() internal.SessionData {
+	uid := Must(uuid.NewV7())
+	return internal.SessionData{
+		Uid: uid.String(),
+	}
+}
+
+func (app *App) NewSession(sessionData internal.SessionData, path string) {
+	parsed := Must(parsers.Parse(path))
+
+	grouped := grouping.MakeBoatGroupings(parsed)
+
+	session := storage.NewStore(&sessionData, grouped)
+
+	err := app.Storage.SetStore(session)
+	// TODO: Handle error
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app.Current = session
+}
+
+func (app *App) SetSession(uid string) {
+	session := Must(app.Storage.GetStore(uid))
+	app.Current = session
+}
+
+func (app *App) ListSessions() []internal.SessionData {
+	sessions, err := app.Storage.ListStores()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return sessions
+}
+
+func (app *App) GetGroupings(sortingMetal string) []internal.Grouping {
+	internal.SortByViolations(app.Current.Groupings, sortingMetal)
+	return app.Current.Groupings
 }

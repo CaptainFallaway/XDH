@@ -29,9 +29,9 @@ type Scan struct {
 	Sn       float64 `json:"sn"`
 }
 
-type Session struct {
+type SessionData struct {
 	Uid              string `json:"uid"`
-	Surveyor         string `json:"reading"`
+	Surveyor         string `json:"surveyor"`
 	Date             int64  `json:"date"`
 	Location         string `json:"location"`
 	InstrumentSerial string `json:"instrumentSerial"`
