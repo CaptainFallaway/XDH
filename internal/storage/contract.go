@@ -2,9 +2,12 @@ package storage
 
 import "github.com/CaptainFallaway/XDH/internal"
 
+// StorageService is a key value storage service
+// It's the key should be the uid of [internal.SessionInfo]
 type StorageService interface {
-	ListStores() (sessionData []internal.SessionData, err error)
-	SetStore(store *Session) error
-	GetStore(uid string) (*Session, error)
-	DeleteStore(uid string) error
+	List() (sessionData []internal.SessionInfo, err error)
+	Set(store *internal.Session) error
+	Get(uid string) (*internal.Session, error)
+	Delete(uid string) error
+	Close() error
 }

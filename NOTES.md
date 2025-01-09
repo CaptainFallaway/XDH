@@ -1,0 +1,1 @@
+- [] Think about how to make the data more predictable and editable, collecting scans and their control measurements. 

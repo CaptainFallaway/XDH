@@ -5,12 +5,12 @@ import (
 )
 
 type IApp interface {
-	NewSessionData() internal.SessionData
+	NewSessionData() internal.SessionInfo
 	OpenFileDialog() (path string)
-	InitializeSession(session internal.SessionData, path string) error
-	SaveSession(session internal.SessionData)
+	CreateSession(session internal.SessionInfo, path string) error
+	SaveSession(session internal.SessionInfo)
 	GetSessions() (uids []string)
-	GetSession(uid string) internal.SessionData
+	GetSession(uid string) internal.SessionInfo
 	GetGroupings(uid string, sortingMetal string) []internal.Grouping
 	UpdateGrouping(internal.Grouping)
 }

@@ -6,7 +6,7 @@ package internal
 
 // Grouping is a collection of info and scans for a specific boat
 type Grouping struct {
-	Index        int              `json:"index"` // A index to help with the sorting, represent on a abstract basis what rows where read
+	Index        int              `json:"index"` // An index to help with the sorting, represent on a abstract basis what rows where read
 	BoatID       string           `json:"boatID"`
 	FirstDate    int64            `json:"firstDate"`
 	LastDate     int64            `json:"lastDate"`
@@ -29,10 +29,22 @@ type Scan struct {
 	Sn       float64 `json:"sn"`
 }
 
-type SessionData struct {
+type SessionInfo struct {
 	Uid              string `json:"uid"`
 	Surveyor         string `json:"surveyor"`
 	Date             int64  `json:"date"`
 	Location         string `json:"location"`
 	InstrumentSerial string `json:"instrumentSerial"`
+}
+
+type Session struct {
+	Session   *SessionInfo
+	Groupings []Grouping
+}
+
+func NewSession(session *SessionInfo, groupings []Grouping) *Session {
+	return &Session{
+		Session:   session,
+		Groupings: groupings,
+	}
 }

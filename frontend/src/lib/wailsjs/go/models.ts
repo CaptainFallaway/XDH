@@ -75,7 +75,7 @@ export namespace internal {
 		}
 	}
 	
-	export class SessionData {
+	export class SessionInfo {
 	    uid: string;
 	    surveyor: string;
 	    date: number;
@@ -83,7 +83,7 @@ export namespace internal {
 	    instrumentSerial: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new SessionData(source);
+	        return new SessionInfo(source);
 	    }
 	
 	    constructor(source: any = {}) {

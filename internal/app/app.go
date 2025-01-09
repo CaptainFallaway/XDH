@@ -30,20 +30,25 @@ type App struct {
 
 	Storage storage.StorageService
 
-	Current *storage.Session
+	Current *internal.Session
 }
 
 func NewApp() *App {
-	store := Must(storage.NewStorageService())
-
-	return &App{
-		Storage: store,
-	}
+	return &App{}
 }
 
 // Wails specific context retrieval
 func (app *App) OnStartup(ctx context.Context) {
 	app.Ctx = ctx
+	app.Storage = Must(storage.NewStorageService()) // TODO: Add dev mode
+}
+
+func (app *App) OnShutdown(ctx context.Context) {
+	log.Println("Shutting down")
+	err := app.Storage.Close()
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 // Must provides a centralized way of handling critical calls
@@ -56,50 +61,89 @@ func Must[T any](val T, err error) T {
 	return val
 }
 
+// OpenFileDialog opens a file dialog with [dialogoptions] and returns the path to the file
 func (app *App) OpenFileDialog() string {
 	return Must(runtime.OpenFileDialog(app.Ctx, dialogOptions))
 }
 
-// NewSession creates a empty [internal.Session] but with the uid set
+// NewSessionData creates an empty [internal.SessionInfo] but with the uid set
 // To a new uuidV7.
-func (app *App) NewSessionData() internal.SessionData {
+func (app *App) NewSessionData() internal.SessionInfo {
 	uid := Must(uuid.NewV7())
-	return internal.SessionData{
+	return internal.SessionInfo{
 		Uid: uid.String(),
 	}
 }
 
-func (app *App) NewSession(sessionData internal.SessionData, path string) {
+func (app *App) CreateSession(sessionData internal.SessionInfo, path string) {
 	parsed := Must(parsers.Parse(path))
 
 	grouped := grouping.MakeBoatGroupings(parsed)
 
-	session := storage.NewStore(&sessionData, grouped)
+	session := internal.NewSession(&sessionData, grouped)
 
-	err := app.Storage.SetStore(session)
-	// TODO: Handle error
+	app.Current = session
+
+	err := app.Storage.Set(session)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
-	app.Current = session
+func (app *App) DeleteSession(uid string) {
+	err := app.Storage.Delete(uid)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (app *App) ListSessions() []internal.SessionInfo {
+	return Must(app.Storage.List())
 }
 
 func (app *App) SetSession(uid string) {
-	session := Must(app.Storage.GetStore(uid))
+	session := Must(app.Storage.Get(uid))
 	app.Current = session
 }
 
-func (app *App) ListSessions() []internal.SessionData {
-	sessions, err := app.Storage.ListStores()
+func (app *App) GetGroupings(sortingMetal string) []internal.Grouping {
+	if app.Current == nil {
+		log.Fatal("No session selected")
+	}
+
+	internal.SortByViolations(app.Current.Groupings, sortingMetal)
+	return app.Current.Groupings
+}
+
+// setToDatabase just sets the `Current` field to the database
+func (app *App) setToDatabase() {
+	err := app.Storage.Set(app.Current)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	return sessions
 }
 
-func (app *App) GetGroupings(sortingMetal string) []internal.Grouping {
-	internal.SortByViolations(app.Current.Groupings, sortingMetal)
-	return app.Current.Groupings
+func (app *App) UpdateSessionData(sessionData internal.SessionInfo) {
+	if app.Current == nil {
+		log.Fatal("No session selected")
+	}
+
+	app.Current.Session = &sessionData
+	app.setToDatabase()
+}
+
+func (app *App) UpdateGrouping(grouping internal.Grouping) {
+	if app.Current == nil {
+		log.Fatal("No session selected")
+	}
+
+	groupings := app.Current.Groupings
+
+	for i, g := range groupings {
+		if g.BoatID == grouping.BoatID {
+			groupings[i] = grouping
+		}
+	}
+
+	app.setToDatabase()
 }

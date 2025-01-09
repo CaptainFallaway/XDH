@@ -7,7 +7,6 @@ import (
 	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/adrg/xdg"
 	"github.com/dgraph-io/badger/v4"
-	"github.com/labstack/gommon/log"
 )
 
 type storage struct {
@@ -32,8 +31,8 @@ func NewStorageService() (StorageService, error) {
 	}, nil
 }
 
-func (s *storage) ListStores() ([]internal.SessionData, error) {
-	sessions := make([]internal.SessionData, 0)
+func (s *storage) List() ([]internal.SessionInfo, error) {
+	sessions := make([]internal.SessionInfo, 0)
 
 	opts := badger.DefaultIteratorOptions
 
@@ -62,7 +61,7 @@ func (s *storage) ListStores() ([]internal.SessionData, error) {
 	return sessions, err
 }
 
-func (s *storage) SetStore(store *Session) error {
+func (s *storage) Set(store *internal.Session) error {
 	err := s.db.Update(func(txn *badger.Txn) error {
 		encoded, err := encodeObj(store)
 		if err != nil {
@@ -76,13 +75,8 @@ func (s *storage) SetStore(store *Session) error {
 	return err
 }
 
-func (s *storage) DeleteStore(uid string) error {
-	log.Fatal("not implemented DeleteSession")
-	return nil
-}
-
-func (s *storage) GetStore(uid string) (*Session, error) {
-	var obj *Session
+func (s *storage) Get(uid string) (*internal.Session, error) {
+	var obj *internal.Session // For broader scope
 
 	err := s.db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get([]byte(uid))
@@ -99,4 +93,19 @@ func (s *storage) GetStore(uid string) (*Session, error) {
 	})
 
 	return obj, err
+}
+
+func (s *storage) Delete(uid string) error {
+	return s.db.Update(func(txn *badger.Txn) error {
+		err := txn.Delete([]byte(uid))
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+}
+
+func (s *storage) Close() error {
+	return s.db.Close()
 }
