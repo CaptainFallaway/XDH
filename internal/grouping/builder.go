@@ -25,6 +25,7 @@ func newGroupingBuilder(boatID string) *groupingBuilder {
 	for _, metal := range internal.MetalPolicy.Metals {
 		vcm[metal] = 0
 	}
+	// Return a new grouping builder
 
 	return &groupingBuilder{
 		UnitSet:           *newSet(),
@@ -45,11 +46,19 @@ func scanRowToScan(scan parsers.ScanRow) internal.Scan {
 		Zn:       scan.Zn.Value,
 		Cu:       scan.Cu.Value,
 		Sn:       scan.Zn.Value,
+		Violations: map[string]bool{
+			"pb": scan.Pb.Value > internal.MetalPolicy.PbViolation,
+			"zn": scan.Zn.Value > internal.MetalPolicy.ZnViolation,
+			"cu": scan.Cu.Value > internal.MetalPolicy.CuViolation,
+			"sn": scan.Sn.Value > internal.MetalPolicy.SnViolation,
+		},
 	}
 }
 
 func (a *groupingBuilder) AppendScan(scanRow parsers.ScanRow) {
 	scan := scanRowToScan(scanRow)
+
+	fmt.Println(scan)
 
 	if scan.Duration < internal.ValidMinimumScanTime {
 		a.InvalidScans = append(a.InvalidScans, scan)
@@ -80,7 +89,7 @@ func (a *groupingBuilder) getUnit() string {
 	units := a.UnitSet.ToSlice()
 
 	if len(units) > 1 {
-		a.AddErrorNote(fmt.Sprintf("Multiple units detected: %v", len(units)))
+		a.AddErrorNote("Multiple units detected: %v", len(units))
 	}
 
 	return units[0]

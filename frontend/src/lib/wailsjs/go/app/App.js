@@ -10,8 +10,12 @@ export function DeleteSession(arg1) {
   return window['go']['app']['App']['DeleteSession'](arg1);
 }
 
-export function GetGroupings(arg1) {
-  return window['go']['app']['App']['GetGroupings'](arg1);
+export function GetGroupings(arg1, arg2) {
+  return window['go']['app']['App']['GetGroupings'](arg1, arg2);
+}
+
+export function GetSessionData(arg1) {
+  return window['go']['app']['App']['GetSessionData'](arg1);
 }
 
 export function ListSessions() {
@@ -26,14 +30,6 @@ export function OpenFileDialog() {
   return window['go']['app']['App']['OpenFileDialog']();
 }
 
-export function SetSession(arg1) {
-  return window['go']['app']['App']['SetSession'](arg1);
-}
-
-export function UpdateGrouping(arg1) {
-  return window['go']['app']['App']['UpdateGrouping'](arg1);
-}
-
-export function UpdateSessionData(arg1) {
-  return window['go']['app']['App']['UpdateSessionData'](arg1);
+export function SetSessionData(arg1) {
+  return window['go']['app']['App']['SetSessionData'](arg1);
 }

@@ -2,12 +2,13 @@ package app
 
 import (
 	"context"
-	"log"
+	"os"
 
 	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/CaptainFallaway/XDH/internal/grouping"
 	"github.com/CaptainFallaway/XDH/internal/parsers"
 	"github.com/CaptainFallaway/XDH/internal/storage"
+	"github.com/charmbracelet/log"
 	"github.com/google/uuid"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
@@ -30,7 +31,7 @@ type App struct {
 
 	Storage storage.StorageService
 
-	Current *internal.Session
+	Log *log.Logger
 }
 
 func NewApp() *App {
@@ -40,110 +41,159 @@ func NewApp() *App {
 // Wails specific context retrieval
 func (app *App) OnStartup(ctx context.Context) {
 	app.Ctx = ctx
-	app.Storage = Must(storage.NewStorageService()) // TODO: Add dev mode
+	app.Storage, _ = storage.NewStorageService() // TODO: Handle error
+	app.Log = log.NewWithOptions(os.Stderr, log.Options{
+		ReportTimestamp: true,
+		ReportCaller:    true,
+	})
 }
 
 func (app *App) OnShutdown(ctx context.Context) {
-	log.Println("Shutting down")
+	app.Log.Debug("Shutting down")
 	err := app.Storage.Close()
 	if err != nil {
-		log.Println(err)
+		app.Log.Fatal(err)
 	}
 }
 
 // Must provides a centralized way of handling critical calls
 // This way i can much easier create error messages. As an example
 // If the storage does not want to instantiate, or we get some weird uuid error.
-func Must[T any](val T, err error) T {
-	if err != nil {
-		log.Fatal(err)
-	}
-	return val
-}
+// func Must[T any](val T, err error) T {
+// 	if err != nil {
+// 		app.Log.Fatal(err)
+// 	}
+// 	return val
+// }
 
-// OpenFileDialog opens a file dialog with [dialogoptions] and returns the path to the file
+// OpenFileDiaapp.Log opens a file dialog with [dialogoptions] and returns the path to the file
 func (app *App) OpenFileDialog() string {
-	return Must(runtime.OpenFileDialog(app.Ctx, dialogOptions))
+	path, err := runtime.OpenFileDialog(app.Ctx, dialogOptions)
+	if err != nil {
+		app.Log.Fatal(err)
+		return ""
+	}
+	return path
 }
 
 // NewSessionData creates an empty [internal.SessionInfo] but with the uid set
 // To a new uuidV7.
 func (app *App) NewSessionData() internal.SessionInfo {
-	uid := Must(uuid.NewV7())
+	uid, err := uuid.NewV7()
+	if err != nil {
+		app.Log.Fatal(err)
+		return internal.SessionInfo{}
+	}
 	return internal.SessionInfo{
 		Uid: uid.String(),
 	}
 }
 
-func (app *App) CreateSession(sessionData internal.SessionInfo, path string) {
-	parsed := Must(parsers.Parse(path))
+func (app *App) CreateSession(sessionData internal.SessionInfo, path string) string {
+	parsed, err := parsers.Parse(path)
+
+	if err != nil {
+		app.Log.Fatal(err)
+		return ""
+	}
 
 	grouped := grouping.MakeBoatGroupings(parsed)
 
 	session := internal.NewSession(&sessionData, grouped)
 
-	app.Current = session
-
-	err := app.Storage.Set(session)
+	err = app.Storage.Set(session)
 	if err != nil {
-		log.Fatal(err)
+		app.Log.Fatal(err)
+		return ""
 	}
+
+	return sessionData.Uid
 }
 
 func (app *App) DeleteSession(uid string) {
 	err := app.Storage.Delete(uid)
 	if err != nil {
-		log.Fatal(err)
+		app.Log.Fatal(err)
 	}
 }
 
 func (app *App) ListSessions() []internal.SessionInfo {
-	return Must(app.Storage.List())
-}
+	sessions, err := app.Storage.List()
 
-func (app *App) SetSession(uid string) {
-	session := Must(app.Storage.Get(uid))
-	app.Current = session
-}
-
-func (app *App) GetGroupings(sortingMetal string) []internal.Grouping {
-	if app.Current == nil {
-		log.Fatal("No session selected")
+	if err != nil {
+		app.Log.Fatal(err)
+		return nil
 	}
 
-	internal.SortByViolations(app.Current.Groupings, sortingMetal)
-	return app.Current.Groupings
+	return sessions
 }
+
+// func (app *App) SetSession(uid string) {
+// 	session := Must(app.Storage.Get(uid))
+// 	app.Current = session
+// }
+
+func (app *App) GetGroupings(sessionId string, sortingMetal string) []internal.Grouping {
+	if sortingMetal == "" || sessionId == "" {
+		return nil
+	}
+
+	session, err := app.Storage.Get(sessionId)
+
+	if err != nil {
+		app.Log.Fatal(err)
+		return nil
+	}
+
+	internal.SortByViolations(session.Groupings, sortingMetal)
+	return session.Groupings
+}
+
+func (app *App) GetSessionData(sessionId string) internal.SessionInfo {
+	session, err := app.Storage.Get(sessionId)
+	if err != nil {
+		app.Log.Fatal(err)
+		return internal.SessionInfo{}
+	}
+	return *session.Session
+}
+
+func (app *App) SetSessionData(sessionData internal.SessionInfo) {
+	session, err := app.Storage.Get(sessionData.Uid)
+
+	if err != nil {
+		app.Log.Fatal(err)
+		return
+	}
+
+	session.Session = &sessionData
+
+	err = app.Storage.Set(session)
+	if err != nil {
+		app.Log.Fatal(err)
+	}
+}
+
+// func (app *App) UpdateGrouping(grouping internal.Grouping) {
+// 	if app.Current == nil {
+// 		app.Log.Fatal("No session selected")
+// 	}
+
+// 	groupings := app.Current.Groupings
+
+// 	for i, g := range groupings {
+// 		if g.BoatID == grouping.BoatID {
+// 			groupings[i] = grouping
+// 		}
+// 	}
+
+// 	app.setToDatabase()
+// }
 
 // setToDatabase just sets the `Current` field to the database
-func (app *App) setToDatabase() {
-	err := app.Storage.Set(app.Current)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func (app *App) UpdateSessionData(sessionData internal.SessionInfo) {
-	if app.Current == nil {
-		log.Fatal("No session selected")
-	}
-
-	app.Current.Session = &sessionData
-	app.setToDatabase()
-}
-
-func (app *App) UpdateGrouping(grouping internal.Grouping) {
-	if app.Current == nil {
-		log.Fatal("No session selected")
-	}
-
-	groupings := app.Current.Groupings
-
-	for i, g := range groupings {
-		if g.BoatID == grouping.BoatID {
-			groupings[i] = grouping
-		}
-	}
-
-	app.setToDatabase()
-}
+// func (app *App) setToDatabase() {
+// 	err := app.Storage.Set(app.Current)
+// 	if err != nil {
+// 		app.Log.Fatal(err)
+// 	}
+// }

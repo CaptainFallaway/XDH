@@ -23,11 +23,11 @@
 
         let path = await app.OpenFileDialog();
 
-        await app.CreateSession(data, path);
+        console.log(path);       
+
+        session = await app.CreateSession(data, path);
 
         fetchSessions();
-
-        session = data.uid;
     }
 
     async function deleteSession() {
@@ -43,57 +43,58 @@
     }
 
     $effect(() => {
-        if (session == "") {
-            return;
-        }
-
-        (async () => {
-            await app.SetSession(session);
-            groupings = await app.GetGroupings(Metal);
-        })();
-    });
-
-    $effect(() => {
         (async () => {
             await fetchSessions();
         })();
     });
 
+    async function getGroupings(session: string, metal: string): Promise<internal.Grouping[]> {
+        const temp = await app.GetGroupings(session, metal);
+        groupings = temp;
+        return temp;
+    }
+
     $inspect(groupings);
     $inspect(sessions);
     $inspect(session);
+    $inspect(metal);
 
-    document["app"] = app;
+    // document["app"] = app;
 </script>
 
 <div class="flex justify-center m-auto flex-col mx-4 space-y-2">
     <div class="flex flex-col w-[50vw] m-auto space-y-4 mb-4">
-        <button onclick={newSession}>new session</button>
-        <button onclick={deleteSession}>delete session</button>
-        <button onclick={fetchSessions}>refresh sessions</button>
+        <button class="btn" onclick={newSession}>new session</button>
+        <button class="btn" onclick={deleteSession}>delete session</button>
+        <button class="btn" onclick={fetchSessions}>refresh sessions</button>
         <div class="flex flex-row space-x-2 content-center justify-center">
             <select class="border border-black rounded" bind:value={session} name="sessionSelect" id="sessionSelect">
                 {#each sessions as session}
                     <option value={session.uid}>{session.uid}</option>
                 {/each}
             </select>
-            <!-- <select class="border border-black rounded" bind:value={metal} name="metalSelect" id="metalSelect">
+            <select class="border border-black rounded" bind:value={metal} name="metalSelect" id="metalSelect">
                 <option value="Sn">Sn</option>
                 <option value="Pb">Pb</option>
                 <option value="Cu">Cu</option>
                 <option value="Zn">Zn</option>
-            </select> -->
+            </select>
         </div>
-        </div>
-    {#each groupings as grouping (grouping.boatID)}
-       <!-- <textarea class="w-[50vw] h-[100vh] m-auto mb-4 border border-black rounded" name="text" id={group.boatID}>
-            {JSON.stringify(group, null, 2)}
-       </textarea>  -->
+    </div>
+
+    {#await getGroupings(session, metal)}
+        <p>loading...</p>
+    {:then groupings} 
+    {#each groupings as grouping}
+    <!-- <textarea class="w-[50vw] h-[100vh] m-auto mb-4 border border-black rounded" name="text" id={grouping.boatID}>
+        {JSON.stringify(grouping, null, 2)}
+        </textarea>  -->
         <Grouping id={grouping.index.toString()} {grouping} />
     {/each}
+    {/await}
 </div>
 
-<style>
+<!-- <style>
     button {
         background-color: black;
         border-radius: 0.5rem;
@@ -107,4 +108,4 @@
     button:hover {
         background-color: grey;
     }
-</style>
+</style> -->

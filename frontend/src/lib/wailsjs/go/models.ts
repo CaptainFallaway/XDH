@@ -9,6 +9,7 @@ export namespace internal {
 	    zn: number;
 	    cu: number;
 	    sn: number;
+	    violations: Record<string, boolean>;
 	
 	    static createFrom(source: any = {}) {
 	        return new Scan(source);
@@ -24,6 +25,7 @@ export namespace internal {
 	        this.zn = source["zn"];
 	        this.cu = source["cu"];
 	        this.sn = source["sn"];
+	        this.violations = source["violations"];
 	    }
 	}
 	export class Grouping {
@@ -35,7 +37,7 @@ export namespace internal {
 	    scans: Scan[];
 	    invalidScans: Scan[];
 	    errorNotes: string[];
-	    violations: {[key: string]: number};
+	    violations: Record<string, number>;
 	    operators: string[];
 	
 	    static createFrom(source: any = {}) {

@@ -7,4 +7,22 @@
   - [ ] If the ammount of scans are less than 8
   - [ ] Other Inconsistensies in data
 - [ ] Sessions management där mätförättaren kan skriva in info...
-  - [ ] ...
+  - [ ] ..
+
+## TODO 2025-02-02
+
+### Features
+
+- [ ] Gör en store class typ, eller någon typ av state management för profilen. Lagra kanske i localstorage...
+- [ ] UI för session info editing.
+- [ ] UI för alla sessioner, drawer.
+  - [ ] Knapp för att skapa ny session.
+  - [ ] Modal för att skriva in session info.
+- [ ] UI för alla modeller.
+  - [ ] UI för modell expandering.
+  - [ ] UI för sortering av modellerna.
+  - [ ] UI för en modal till att skriva in ytterligare data innan man genererar report.
+  
+### Fixes
+
+- [ ] Modellerna verkar vara icke keyed, alltså att css state erhålls beroende på typ en index i diven istället för innehållet av modellen.

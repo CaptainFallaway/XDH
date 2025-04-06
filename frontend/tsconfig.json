@@ -16,7 +16,8 @@
     "checkJs": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/**/*.svelte.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
