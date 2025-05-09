@@ -2,6 +2,8 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"os"
 
 	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/CaptainFallaway/XDH/internal/app"
@@ -15,9 +17,14 @@ import (
 var assets embed.FS
 
 func main() {
-	app := app.NewApp()
+	app, err := app.NewApp()
 
-	err := wails.Run(&options.App{
+	if err != nil {
+		fmt.Println("Error instantiating app: ", err.Error())
+		os.Exit(1)
+	}
+
+	err = wails.Run(&options.App{
 		Title:     internal.AppName,
 		Width:     1024,
 		Height:    768,
@@ -34,6 +41,6 @@ func main() {
 	})
 
 	if err != nil {
-		println("Error:", err.Error())
+		fmt.Println("Error: ", err.Error())
 	}
 }

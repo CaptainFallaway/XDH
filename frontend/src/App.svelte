@@ -58,8 +58,6 @@
     $inspect(sessions);
     $inspect(session);
     $inspect(metal);
-
-    // document["app"] = app;
 </script>
 
 <div class="flex justify-center m-auto flex-col mx-4 space-y-2">

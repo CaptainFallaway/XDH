@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MetalSummary from './MetalSummary.svelte';
 import type {
     internal
 } from "../wailsjs/go/models";
@@ -21,69 +22,16 @@ const averages = {
     cu: (data.scans.reduce((sum, scan) => sum + scan.cu, 0) / data.scans.length).toFixed(2),
 };
 
+const violations = data.violations;
+
 function isViolation(element: string, scan: internal.Scan): boolean {
     console.log(scan)
     return scan.violations[element];
 }
 </script>
 
-<div {id} class="container mx-auto p-4 bg-base-200 min-h-screen max-w-full">
-  <h1 class="text-3xl font-bold mb-4">Enhanced Boat Scan Dashboard</h1>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-    <div class="card bg-primary text-primary-content">
-      <div class="card-body">
-        <h2 class="card-title">Boat ID</h2>
-        <p>{data.boatID}</p>
-      </div>
-    </div>
-    <div class="card bg-secondary text-secondary-content">
-      <div class="card-body">
-        <h2 class="card-title">Scan Period</h2>
-        <p>{formatDate(data.firstDate)} - {formatDate(data.lastDate)}</p>
-      </div>
-    </div>
-    <div class="card bg-accent text-accent-content">
-      <div class="card-body">
-        <h2 class="card-title">Total Scans</h2>
-        <p>{data.scans.length}</p>
-      </div>
-    </div>
-    <div class="card bg-neutral text-neutral-content">
-      <div class="card-body">
-        <h2 class="card-title">Violations</h2>
-        <ul>
-          {#each Object.entries(data.violations) as [element, count]}
-            <li>{element}: {count}</li>
-          {/each}
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="card bg-base-100 shadow-xl mb-4">
-    <div class="card-body">
-      <h2 class="card-title mb-2">Average Readings</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="stat">
-          <div class="stat-title">Pb</div>
-          <div class="stat-value">{averages.pb}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-title">Zn</div>
-          <div class="stat-value">{averages.zn}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-title">Cu</div>
-          <div class="stat-value">{averages.cu}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-title">Sn</div>
-          <div class="stat-value">{averages.sn}</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div {id} class="container mx-auto py-4 bg-base-200 min-h-screen max-w-full">
+  <MetalSummary violationCounts={violations}/>
 
   {#if data.errorNotes && data.errorNotes.length > 0}
     <div class="alert alert-error shadow-lg mb-4">
