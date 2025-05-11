@@ -1,13 +1,16 @@
 package storage
 
-import "github.com/CaptainFallaway/XDH/internal"
+import "github.com/CaptainFallaway/XDH/internal/models"
 
-// StorageService is a key value storage service
-// The key should be the uid of [internal.SessionInfo]
-type StorageService interface {
-	List() (sessionData []internal.SessionInfo, err error)
-	Set(store *internal.Session) error
-	Get(uid string) (*internal.Session, error)
-	Delete(uid string) error
-	Close() error
+type Storage interface {
+	GetAllSurveys() ([]*models.Survey, error)
+	InsertSurvey(survey *models.Survey) error
+	UpdateSurvey(survey *models.Survey) error
+	DeleteSurvey(uid string) error
+
+	InsertGroupings(surveryId string, groupings []*models.Grouping) error
+	GetGroupings(surveyId string) ([]*models.Grouping, error)
+
+	InsertScans(groupingId string, scans []*models.Scan) error
+	UpdateScan(scan *models.Scan) error
 }

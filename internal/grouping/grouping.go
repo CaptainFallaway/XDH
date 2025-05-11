@@ -1,11 +1,15 @@
 package grouping
 
 import (
-	"github.com/CaptainFallaway/XDH/internal"
+	"github.com/CaptainFallaway/XDH/internal/models"
 	"github.com/CaptainFallaway/XDH/internal/parsers"
 )
 
-func MakeBoatGroupings(scans []parsers.ScanRow) []internal.Grouping {
+// MakeBoatGroupings takes in the parsed scan rows and builds the grouping objects.
+//
+// This is intentionally a static relation since the builder of this package
+// Is bound to what is then stored in the database and operated on from the user.
+func BomboclatConverter(scans []parsers.ScanRow) ([]models.Grouping, []models.Scan) {
 	boatMap := make(map[string][]parsers.ScanRow)
 	indexer := newIndexer() // Mitigate the randomness of maps
 
@@ -15,7 +19,7 @@ func MakeBoatGroupings(scans []parsers.ScanRow) []internal.Grouping {
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}
 
-	grouping := make([]internal.Grouping, 0, len(boatMap))
+	grouping := make([]models.Grouping, 0, len(boatMap))
 
 	// Iterating over the map and creating the groupings for each boat with a builder
 	for boatID, scans := range boatMap {
@@ -33,5 +37,5 @@ func MakeBoatGroupings(scans []parsers.ScanRow) []internal.Grouping {
 		grouping = append(grouping, builder.BuildGrouping(indexer.Indexes[boatID]))
 	}
 
-	return grouping
+	return grouping, builder.Scans
 }
