@@ -1,6 +1,6 @@
 module github.com/CaptainFallaway/XDH
 
-go 1.24.2
+go 1.24.3
 
 require (
 	github.com/a-h/templ v0.2.778
