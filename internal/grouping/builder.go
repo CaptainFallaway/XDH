@@ -6,12 +6,14 @@ import (
 	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/CaptainFallaway/XDH/internal/models"
 	"github.com/CaptainFallaway/XDH/internal/parsers"
+	"github.com/google/uuid"
 )
 
 type groupingBuilder struct {
 	FirstDate         int64
 	LastDate          int64
 	Scans             []models.Scan
+	InvalidScans      []models.Scan
 	ErrorNotes        []string
 	UnitSet           set
 	ViolationCountMap map[string]uint8
@@ -20,15 +22,13 @@ type groupingBuilder struct {
 }
 
 func newGroupingBuilder(boatID string) *groupingBuilder {
-	// Create the violation count map for the builder
 	vcm := make(map[string]uint8, internal.MetalPolicy.AmmountOfMetals)
 
-	// Initialize all of the metal values in the violation count map
 	for _, metal := range internal.MetalPolicy.Metals {
 		vcm[metal] = 0
 	}
-
 	// Return a new grouping builder
+
 	return &groupingBuilder{
 		UnitSet:           *newSet(),
 		ViolationCountMap: vcm,
@@ -37,7 +37,7 @@ func newGroupingBuilder(boatID string) *groupingBuilder {
 	}
 }
 
-// scanRowToScan converts the parser package dto to this scan type
+// Converting parsers dto to domaing specific type
 func scanRowToScan(scan parsers.ScanRow) models.Scan {
 	return models.Scan{
 		Reading:  scan.Reading,
@@ -59,8 +59,14 @@ func scanRowToScan(scan parsers.ScanRow) models.Scan {
 
 func (a *groupingBuilder) AppendScan(scanRow parsers.ScanRow) {
 	scan := scanRowToScan(scanRow)
-	scan.Valid = scan.Duration >= internal.ValidMinimumScanTime
-	a.Scans = append(a.Scans, scan)
+
+	fmt.Println(scan)
+
+	if scan.Duration < internal.ValidMinimumScanTime {
+		a.InvalidScans = append(a.InvalidScans, scan)
+	} else {
+		a.Scans = append(a.Scans, scan)
+	}
 }
 
 func (a *groupingBuilder) AddErrorNote(err string, args ...any) {
@@ -91,31 +97,31 @@ func (a *groupingBuilder) getUnit() string {
 	return units[0]
 }
 
-func (a *groupingBuilder) BuildGrouping(index int) models.Grouping {
-	return models.Grouping{
-		Index:      index,
-		FirstDate:  a.FirstDate,
-		LastDate:   a.LastDate,
-		Unit:       a.getUnit(),
-		ErrorNotes: a.ErrorNotes,
-		Violations: a.ViolationCountMap,
-		BoatID:     a.BoatID,
-		Operators:  a.Operators.ToSlice(),
-	}
-}
-
-func (a *groupingBuilder) GetScans() []models.Scan {
-	// Count the amount of valid scans
-	validScans := 0
-	for _, scan := range a.Scans {
-		if scan.Valid {
-			validScans++
-		}
-	}
-
-	if validScans < internal.MinimumAmmoutOfScans {
+// getValidScans returns the valid scans and adds an error note if there are too few
+func (a *groupingBuilder) getValidScans() []models.Scan {
+	if len(a.Scans) < internal.MinimumAmmoutOfScans {
 		a.AddErrorNote("Mindre än %d giltig scanner", internal.MinimumAmmoutOfScans)
 	}
 
 	return a.Scans
+}
+
+// BuildGrouping builds the grouping object from the builder.
+// It also generates a Uid for each grouping.
+func (a *groupingBuilder) BuildGrouping(index int) (models.Grouping, error) {
+	uid, err := uuid.NewV7()
+
+	return models.Grouping{
+		Uid:          uid.String(),
+		Index:        index,
+		FirstDate:    a.FirstDate,
+		LastDate:     a.LastDate,
+		Unit:         a.getUnit(),
+		ValidScans:   a.getValidScans(),
+		InvalidScans: a.InvalidScans,
+		ErrorNotes:   a.ErrorNotes,
+		Violations:   a.ViolationCountMap,
+		BoatID:       a.BoatID,
+		Operators:    a.Operators.ToSlice(),
+	}, err
 }

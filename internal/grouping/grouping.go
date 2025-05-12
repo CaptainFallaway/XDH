@@ -7,9 +7,8 @@ import (
 
 // MakeBoatGroupings takes in the parsed scan rows and builds the grouping objects.
 //
-// This is intentionally a static relation since the builder of this package
-// Is bound to what is then stored in the database and operated on from the user.
-func BomboclatConverter(scans []parsers.ScanRow) ([]models.Grouping, []models.Scan) {
+// It also generates a Uid for each grouping.
+func MakeBoatGroupings(scans []parsers.ScanRow) ([]models.Grouping, error) {
 	boatMap := make(map[string][]parsers.ScanRow)
 	indexer := newIndexer() // Mitigate the randomness of maps
 
@@ -19,7 +18,7 @@ func BomboclatConverter(scans []parsers.ScanRow) ([]models.Grouping, []models.Sc
 		boatMap[scan.Boat] = append(boatMap[scan.Boat], scan)
 	}
 
-	grouping := make([]models.Grouping, 0, len(boatMap))
+	groupings := make([]models.Grouping, 0, len(boatMap))
 
 	// Iterating over the map and creating the groupings for each boat with a builder
 	for boatID, scans := range boatMap {
@@ -34,8 +33,13 @@ func BomboclatConverter(scans []parsers.ScanRow) ([]models.Grouping, []models.Sc
 			builder.CountViolations(scan)
 		}
 
-		grouping = append(grouping, builder.BuildGrouping(indexer.Indexes[boatID]))
+		grouping, err := builder.BuildGrouping(indexer.Indexes[boatID])
+		if err != nil {
+			return nil, err
+		}
+
+		groupings = append(groupings, grouping)
 	}
 
-	return grouping, builder.Scans
+	return groupings, nil
 }

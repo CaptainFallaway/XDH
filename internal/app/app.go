@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/CaptainFallaway/XDH/internal/storage"
@@ -12,21 +11,16 @@ import (
 )
 
 type App struct {
-	Mux sync.Mutex
-
 	Ctx context.Context
 
-	Sessions  storage.KeyValueStorage[*internal.Session]
-	Groupings storage.KeyValueStorage[[]internal.Grouping]
+	surveysPath   string
+	groupingsPath string
+
+	Storage storage.Storage
 }
 
 func NewApp() (*App, error) {
-	sessionsPath, err := xdg.DataFile(fmt.Sprintf("%s/sessions", internal.AppName))
-	if err != nil {
-		return nil, err
-	}
-
-	sessions, err := storage.NewBadgerStorage[*internal.Session](sessionsPath)
+	surveysPath, err := xdg.DataFile(fmt.Sprintf("%s/sessions", internal.AppName))
 	if err != nil {
 		return nil, err
 	}
@@ -36,36 +30,35 @@ func NewApp() (*App, error) {
 		return nil, err
 	}
 
-	groupings, err := storage.NewBadgerStorage[[]internal.Grouping](groupingsPath)
-	if err != nil {
-		return nil, err
-	}
-
 	return &App{
-		Sessions:  sessions,
-		Groupings: groupings,
+		surveysPath:   surveysPath,
+		groupingsPath: groupingsPath,
 	}, nil
 }
 
 // Wails specific context retrieval
 func (app *App) OnStartup(ctx context.Context) {
 	app.Ctx = ctx
+
+	storage := storage.NewTestStorage()
+
+	app.Storage = storage
+	runtime.LogInfo(app.Ctx, "Storage initialized")
 }
 
 func (app *App) OnShutdown(ctx context.Context) {
 	runtime.LogDebug(app.Ctx, "Shutting down")
 
-	err := app.Sessions.Close()
+	err := app.Storage.Close()
 
 	if err != nil {
 		runtime.LogFatal(app.Ctx, err.Error())
 	}
+}
 
-	err = app.Groupings.Close()
-
-	if err != nil {
-		runtime.LogFatal(app.Ctx, err.Error())
-	}
+// HandleError TODO
+func (app *App) HandleError(err error) {
+	runtime.LogFatal(app.Ctx, fmt.Sprintf("Error Error Error: %s", err.Error()))
 }
 
 // OpenFileDialog opens a file dialog through the wails API, returning a path to the selected file.

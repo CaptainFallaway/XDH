@@ -8,12 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@preact/signals':
+        specifier: ^2.0.4
+        version: 2.0.4(preact@10.26.6)
       '@tailwindcss/vite':
         specifier: ^4.1.6
         version: 4.1.6(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2))
       daisyui:
         specifier: ^5.0.35
         version: 5.0.35
+      path:
+        specifier: ^0.12.7
+        version: 0.12.7
       preact:
         specifier: ^10.26.5
         version: 10.26.6
@@ -24,6 +30,9 @@ importers:
       '@preact/preset-vite':
         specifier: ^2.10.1
         version: 2.10.1(@babel/core@7.27.1)(preact@10.26.6)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2))
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
@@ -303,6 +312,14 @@ packages:
     peerDependencies:
       '@babel/core': 7.x
       vite: 2.x || 3.x || 4.x || 5.x || 6.x
+
+  '@preact/signals-core@1.8.0':
+    resolution: {integrity: sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA==}
+
+  '@preact/signals@2.0.4':
+    resolution: {integrity: sha512-9241aGnIv7y0IGzaq2vkBMe8/0jGnnmEEUeFmAoTWsaj8q/BW2PVekL8nHVJcy69bBww6rwEy3A1tc6yPE0sJA==}
+    peerDependencies:
+      preact: '>= 10.25.0'
 
   '@prefresh/babel-plugin@0.5.1':
     resolution: {integrity: sha512-uG3jGEAysxWoyG3XkYfjYHgaySFrSsaEb4GagLzYaxlydbuREtaX+FTxuIidp241RaLl85XoHg9Ej6E4+V1pcg==}
@@ -628,6 +645,9 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
+  inherits@2.0.3:
+    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
+
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
@@ -748,6 +768,9 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
+  path@0.12.7:
+    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -765,6 +788,15 @@ packages:
 
   preact@10.26.6:
     resolution: {integrity: sha512-5SRRBinwpwkaD+OqlBDeITlRgvd8I8QlxHJw9AxSdMNV6O+LodN9nUyYGpSF7sadHjs6RzeFShMexC6DbtWr9g==}
+
+  prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+    engines: {node: '>=14'}
+    hasBin: true
+
+  process@0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
+    engines: {node: '>= 0.6.0'}
 
   rollup@4.40.2:
     resolution: {integrity: sha512-tfUOg6DTP4rhQ3VjOO6B4wyrJnGOX85requAXvqYTHsOgb2TFJdZ3aWpT8W2kPoypSGP7dZUyzxJ9ee4buM5Fg==}
@@ -815,6 +847,9 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
+
+  util@0.10.4:
+    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==}
 
   vite-prerender-plugin@0.5.10:
     resolution: {integrity: sha512-m4i0G5oc3LPLA02uW2XsFZmYNxZdyryz5Ksi78O9puj/ao5c8dBUW06caGwoM1TmYknTBBUyKhtqajUpoP+z8Q==}
@@ -1114,6 +1149,13 @@ snapshots:
       - preact
       - supports-color
 
+  '@preact/signals-core@1.8.0': {}
+
+  '@preact/signals@2.0.4(preact@10.26.6)':
+    dependencies:
+      '@preact/signals-core': 1.8.0
+      preact: 10.26.6
+
   '@prefresh/babel-plugin@0.5.1': {}
 
   '@prefresh/core@1.5.3(preact@10.26.6)':
@@ -1383,6 +1425,8 @@ snapshots:
 
   he@1.2.0: {}
 
+  inherits@2.0.3: {}
+
   jiti@2.4.2: {}
 
   js-tokens@4.0.0: {}
@@ -1469,6 +1513,11 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
+  path@0.12.7:
+    dependencies:
+      process: 0.11.10
+      util: 0.10.4
+
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -1482,6 +1531,10 @@ snapshots:
       source-map-js: 1.2.1
 
   preact@10.26.6: {}
+
+  prettier@3.5.3: {}
+
+  process@0.11.10: {}
 
   rollup@4.40.2:
     dependencies:
@@ -1546,6 +1599,10 @@ snapshots:
       browserslist: 4.24.5
       escalade: 3.2.0
       picocolors: 1.1.1
+
+  util@0.10.4:
+    dependencies:
+      inherits: 2.0.3
 
   vite-prerender-plugin@0.5.10(vite@6.3.5(jiti@2.4.2)(lightningcss@1.29.2)):
     dependencies:

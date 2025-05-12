@@ -24,8 +24,6 @@ require (
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/ijt/goparsify v0.0.0-20221203142333-3a5276334b8d // indirect
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
-	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/labstack/echo/v4 v4.13.3 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
@@ -55,7 +53,6 @@ require (
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
-	gorm.io/gorm v1.26.1 // indirect
 )
 
 // replace github.com/wailsapp/wails/v2 v2.7.1 => C:\Users\capnroot\go\pkg\mod

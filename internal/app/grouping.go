@@ -1,25 +1,38 @@
 package app
 
 import (
-	"github.com/CaptainFallaway/XDH/internal"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/CaptainFallaway/XDH/internal/api"
+	"github.com/CaptainFallaway/XDH/internal/models"
 )
 
-// GetGroupings returns a list of all groupings from a session
-func (app *App) GetGroupings(uid string, sortingMetal string) []internal.Grouping {
-	if sortingMetal == "" || uid == "" {
-		return nil
+// createGroupings inserts the groupings into the storage
+// and returns an error if it fails.
+//
+// This method is used when creating a new survey
+// and when updating an existing survey.
+func (app *App) insertGroupings(groupings []models.Grouping) error {
+	for _, grouping := range groupings {
+		err := app.Storage.InsertGrouping(&grouping)
+		if err != nil {
+			return err
+		}
 	}
-
-	groupings, err := app.Groupings.Get(uid)
-	if err != nil {
-		runtime.LogFatal(app.Ctx, err.Error())
-		return nil
-	}
-
-	internal.SortByViolations(groupings, sortingMetal)
-	return groupings
+	return nil
 }
 
-// UpdateGrouping updates the singular grouping in the full collection of groupings
-func (app *App) UpdateGrouping(uid string, grouping internal.Grouping) {}
+func (app *App) UpdateGrouping(groupingId string, grouping *api.Grouping) {
+	err := app.Storage.UpdateGrouping(groupingId, grouping)
+	if err != nil {
+		app.HandleError(err)
+		return
+	}
+}
+
+func (app *App) GetGroupings(groupingIds []string) []models.Grouping {
+	groupings, err := app.Storage.GetGroupings(groupingIds)
+	if err != nil {
+		app.HandleError(err)
+		return nil
+	}
+	return groupings
+}

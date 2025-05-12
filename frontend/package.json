@@ -9,13 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@preact/signals": "^2.0.4",
     "@tailwindcss/vite": "^4.1.6",
     "daisyui": "^5.0.35",
+    "path": "^0.12.7",
     "preact": "^10.26.5",
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.1",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   },
