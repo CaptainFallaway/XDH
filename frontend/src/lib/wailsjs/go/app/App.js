@@ -10,8 +10,8 @@ export function DeleteSurvey(arg1) {
   return window['go']['app']['App']['DeleteSurvey'](arg1);
 }
 
-export function GetGroupings(arg1) {
-  return window['go']['app']['App']['GetGroupings'](arg1);
+export function GetGroupings(arg1, arg2) {
+  return window['go']['app']['App']['GetGroupings'](arg1, arg2);
 }
 
 export function GetSurveys() {

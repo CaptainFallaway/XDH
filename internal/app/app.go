@@ -74,7 +74,7 @@ func (app *App) OpenFileDialog() string {
 	})
 
 	if err != nil {
-		runtime.LogFatal(app.Ctx, err.Error())
+		runtime.LogDebug(app.Ctx, err.Error())
 		return ""
 	}
 

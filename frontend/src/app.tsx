@@ -1,12 +1,14 @@
 import { signal } from '@preact/signals';
 
-import * as app from './lib/wailsjs/go/app/App';
+import * as app from '@wails/go/app/App';
 import { api, models } from './lib/wailsjs/go/models';
-import NewSurveyBtn from './components/newSurveyBtn';
+import NewSurveyBtn from '@components/surveyModal/newSurveryBtn';
+import Grouping from '@components/grouping/grouping';
 
 const selectedSurvey = signal<models.Survey | null>(null);
 const surveys = signal<models.Survey[]>([]);
 const groupings = signal<models.Grouping[]>([]);
+const sortingMetal = signal<string>('Pb');
 
 selectedSurvey.subscribe(async (value) => {
   if (!value) {
@@ -14,19 +16,17 @@ selectedSurvey.subscribe(async (value) => {
     return;
   }
 
-  const temp = await app.GetGroupings(value.groupingIds);
+  console.log('Selected survey', value);
+
+  const temp = await app.GetGroupings(value.groupingIds, sortingMetal.value);
+
+  console.log('Groupings', temp);
+
   groupings.value = temp;
 });
 
-async function createSurvey(dto: api.Survey) {
+async function createSurvey(dto: api.Survey, path: string) {
   console.log('Creating survey', dto);
-  return;
-
-  const path = await app.OpenFileDialog();
-  if (!path) {
-    console.error('No path selected');
-    return;
-  }
 
   selectedSurvey.value = await app.CreateSurvey(dto, path);
 }
@@ -53,13 +53,13 @@ export function App() {
       <div className="flex content-center justify-center">
         <div className="flex flex-col space-y-1">
           <NewSurveyBtn className="btn" onCancel={() => console.log('Cancelled')} onSubmit={createSurvey}>
-            New Survey
+            Nytt Mätschema
           </NewSurveyBtn>
           <button className="btn" onClick={getSurveys}>
-            Get Surveys
+            Ladda mätscheman
           </button>
           <button className="btn" onClick={deleteSurvey}>
-            Delete Current Survey
+            Ta bort nuvarande mätschema
           </button>
         </div>
         <select
@@ -78,9 +78,11 @@ export function App() {
         </select>
       </div>
 
-      {groupings.value.map((grouping) => (
-        <p>{grouping.boatID}</p>
-      ))}
+      <div className={'flex flex-col space-y-2 p-4'}>
+        {groupings.value.map((grouping) => (
+          <Grouping key={grouping.boatID} grouping={grouping} metal={sortingMetal.value} />
+        ))}
+      </div>
     </>
   );
 }

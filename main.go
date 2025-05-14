@@ -18,7 +18,6 @@ var assets embed.FS
 
 func main() {
 	app, err := app.NewApp()
-
 	if err != nil {
 		fmt.Println("Error instantiating app: ", err.Error())
 		os.Exit(1)

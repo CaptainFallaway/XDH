@@ -24,6 +24,10 @@ func MakeBoatGroupings(scans []parsers.ScanRow) ([]models.Grouping, error) {
 	for boatID, scans := range boatMap {
 		builder := newGroupingBuilder(boatID)
 
+		if boatID == "Ref high" || boatID == "Ref low" {
+			continue
+		}
+
 		for _, scan := range scans {
 			builder.Operators.Add(scan.Operator)
 			builder.UnitSet.Add(scan.Units)

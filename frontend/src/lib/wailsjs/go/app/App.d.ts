@@ -7,7 +7,7 @@ export function CreateSurvey(arg1:api.Survey,arg2:string):Promise<models.Survey>
 
 export function DeleteSurvey(arg1:string):Promise<void>;
 
-export function GetGroupings(arg1:Array<string>):Promise<Array<models.Grouping>>;
+export function GetGroupings(arg1:Array<string>,arg2:string):Promise<Array<models.Grouping>>;
 
 export function GetSurveys():Promise<Array<models.Survey>>;
 

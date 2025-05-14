@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/CaptainFallaway/XDH/internal"
 	"github.com/CaptainFallaway/XDH/internal/api"
 	"github.com/CaptainFallaway/XDH/internal/models"
 )
@@ -28,11 +29,15 @@ func (app *App) UpdateGrouping(groupingId string, grouping *api.Grouping) {
 	}
 }
 
-func (app *App) GetGroupings(groupingIds []string) []models.Grouping {
+func (app *App) GetGroupings(groupingIds []string, sortingMetal string) []models.Grouping {
 	groupings, err := app.Storage.GetGroupings(groupingIds)
 	if err != nil {
 		app.HandleError(err)
 		return nil
 	}
+
+	// Sort the groupings by violations
+	internal.SortByViolations(groupings, sortingMetal)
+
 	return groupings
 }
