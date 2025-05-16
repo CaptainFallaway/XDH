@@ -11,6 +11,8 @@ let {
     data: internal.Grouping
 } = $props();
 
+import { FileDown } from "lucide-svelte";
+
 function formatDate(timestamp: number) {
     return new Date(timestamp * 1000).toLocaleString();
 }
@@ -81,6 +83,13 @@ function isViolation(element: string, scan: internal.Scan): boolean {
         </table>
       </div>
     </div>
+  </div>
+
+  <div class="flex justify-end mb-4">
+    <button class="btn btn-primary">
+      <FileDown size={18} />
+      Export to PDF
+    </button>
   </div>
 </div>
 

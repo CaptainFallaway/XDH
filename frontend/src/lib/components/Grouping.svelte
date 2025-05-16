@@ -33,7 +33,7 @@
     {@render info("Första skanning", new Date(grouping.firstDate * 1000).toLocaleString())}
     {@render info("Sista skanning", new Date(grouping.lastDate * 1000).toLocaleString())}
     {#if show}
-      <div in:fade|global>
+      <div in:fade|global class="justify-content-end">
         <ChevronDown size={48} />
       </div>
     {:else}
