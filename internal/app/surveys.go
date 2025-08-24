@@ -44,6 +44,7 @@ func (app *App) CreateSurvey(surveyDto *api.Survey, dataSourcePath string) *mode
 		Date:             surveyDto.Date,
 		Location:         surveyDto.Location,
 		InstrumentSerial: surveyDto.InstrumentSerial,
+		WestCoastFlag:    surveyDto.WestCoastFlag,
 		GroupingIds:      groupingIds,
 	}
 

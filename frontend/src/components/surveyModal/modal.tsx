@@ -25,6 +25,7 @@ export default function Modal({ onCancel, onSubmit, modalId }: ModalProps) {
       date: Date.now() * 1000,
       location: form.location.value,
       instrumentSerial: form.instrumentSerial.value,
+      westCoastFlag: form.westCoastFlag.value === 'true',
     };
 
     await onSubmit(dto, selectedFile.value!);
@@ -53,6 +54,12 @@ export default function Modal({ onCancel, onSubmit, modalId }: ModalProps) {
 
             <label className="label">XRF Instrument - Serienummer</label>
             <input type="text" className="input" name="instrumentSerial" />
+
+            <label className="label">Kust</label>
+            <select name="westCoastFlag" className="select">
+              <option value="true">Västkusten</option>
+              <option value="false">Östkusten</option>
+            </select>
           </fieldset>
           <FileInput selectedFile={selectedFile} />
         </div>

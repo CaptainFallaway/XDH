@@ -33,7 +33,7 @@ type ExperimentalSqliteStorage interface {
 	DeleteSurvey(surveyId string) error
 
 	GetGroupings(surveyId string) ([]models.Grouping, error)
-	InsertGrouping(grouping *models.Grouping) error
+	InsertGrouping(surveyId string, grouping *models.Grouping) error
 	UpdateGrouping(groupingId string, grouping *api.Grouping) error
 
 	io.Closer

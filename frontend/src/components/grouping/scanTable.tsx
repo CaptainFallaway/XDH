@@ -1,7 +1,15 @@
 import { formatLongDate } from '@utils/dates';
 import { models } from '@wails/go/models';
 
-export default function ScansTable({ scans, unit }: { scans: models.Scan[]; unit: string }) {
+export default function ScansTable({
+  scans,
+  unit,
+  westCoastFlag,
+}: {
+  scans: models.Scan[];
+  unit: string;
+  westCoastFlag: boolean;
+}) {
   return (
     <div class="overflow-x-auto">
       <table class="table bg-base-100 table-zebra w-full">
@@ -12,10 +20,17 @@ export default function ScansTable({ scans, unit }: { scans: models.Scan[]; unit
             <th>Duration</th>
             <th>Operator</th>
             <th>Date/Time</th>
-            <th>Pb ({unit})</th>
-            <th>Zn ({unit})</th>
-            <th>Cu ({unit})</th>
-            <th>Sn ({unit})</th>
+            {westCoastFlag ? (
+              <>
+                <th>Pb ({unit})</th>
+                <th>Sn ({unit})</th>
+              </>
+            ) : (
+              <>
+                <th>Cu ({unit})</th>
+                <th>Zn ({unit})</th>
+              </>
+            )}
             <th>Enabled</th>
           </tr>
         </thead>
@@ -46,13 +61,20 @@ export default function ScansTable({ scans, unit }: { scans: models.Scan[]; unit
               <td>{scan.operator}</td>
               <td>
                 {formatLongDate(scan.date)}
-                <br />
-                <span className="text-xs opacity-70">{formatLongDate(scan.date)}</span>
+                {/* <br />
+                <span className="text-xs opacity-70">{formatLongDate(scan.date)}</span> */}
               </td>
-              <td className={scan.violations['pb'] ? 'text-error font-bold' : ''}>{scan.pb.toFixed(2)}</td>
-              <td className={scan.violations['zn'] ? 'text-error font-bold' : ''}>{scan.zn.toFixed(2)}</td>
-              <td className={scan.violations['cu'] ? 'text-error font-bold' : ''}>{scan.cu.toFixed(2)}</td>
-              <td className={scan.violations['sn'] ? 'text-error font-bold' : ''}>{scan.sn.toFixed(2)}</td>
+              {westCoastFlag ? (
+                <>
+                  <td className={scan.violations['pb'] ? 'text-error font-bold' : ''}>{scan.pb.toFixed(2)}</td>
+                  <td className={scan.violations['sn'] ? 'text-error font-bold' : ''}>{scan.sn.toFixed(2)}</td>
+                </>
+              ) : (
+                <>
+                  <td className={scan.violations['cu'] ? 'text-error font-bold' : ''}>{scan.cu.toFixed(2)}</td>
+                  <td className={scan.violations['zn'] ? 'text-error font-bold' : ''}>{scan.zn.toFixed(2)}</td>
+                </>
+              )}
               <td>
                 <input
                   type="checkbox"

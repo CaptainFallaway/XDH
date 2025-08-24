@@ -33,7 +33,7 @@ async function createSurvey(dto: api.Survey, path: string) {
 
 async function getSurveys() {
   const temp = await app.GetSurveys();
-  console.log('Suveys', temp);
+  console.log('Surveys', temp);
   surveys.value = temp;
 }
 
@@ -62,25 +62,38 @@ export function App() {
             Ta bort nuvarande mätschema
           </button>
         </div>
-        <select
-          className="select"
-          onChange={async (e) => {
-            const survey = surveys.value.find((s) => s.uid === e.currentTarget.value);
-            if (survey) selectedSurvey.value = survey;
-          }}
-        >
-          <option selected>Pick a survey</option>
-          {surveys.value.map((survey) => (
-            <option key={survey.uid} value={survey.uid}>
-              {survey.surveyor} - {survey.location} - {survey.date * 1000} - {survey.instrumentSerial}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-col">
+          <select
+            className="select"
+            onChange={async (e) => {
+              const survey = surveys.value.find((s) => s.uid === e.currentTarget.value);
+              if (survey) selectedSurvey.value = survey;
+            }}
+          >
+            <option selected>Pick a survey</option>
+            {surveys.value.map((survey) => (
+              <option key={survey.uid} value={survey.uid}>
+                {survey.surveyor} - {survey.location} - {survey.date * 1000} - {survey.instrumentSerial}
+              </option>
+            ))}
+          </select>
+          {/* {selectedSurvey.value?.westCoastFlag ? (
+            <select name="" id=""></select>
+          ) : (
+            <select name="" id=""></select>
+          )
+            } */}
+        </div>
       </div>
 
       <div className={'flex flex-col space-y-2 p-4'}>
         {groupings.value.map((grouping) => (
-          <Grouping key={grouping.boatID} grouping={grouping} metal={sortingMetal.value} />
+          <Grouping
+            key={grouping.boatID}
+            grouping={grouping}
+            metal={sortingMetal.value}
+            westCoastFlag={selectedSurvey.value?.westCoastFlag || false}
+          />
         ))}
       </div>
     </>

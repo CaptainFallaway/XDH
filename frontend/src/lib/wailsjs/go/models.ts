@@ -36,6 +36,7 @@ export namespace api {
 	    surveyor: string;
 	    date: number;
 	    location: string;
+	    westCoastFlag: boolean;
 	    instrumentSerial: string;
 	
 	    static createFrom(source: any = {}) {
@@ -47,6 +48,7 @@ export namespace api {
 	        this.surveyor = source["surveyor"];
 	        this.date = source["date"];
 	        this.location = source["location"];
+	        this.westCoastFlag = source["westCoastFlag"];
 	        this.instrumentSerial = source["instrumentSerial"];
 	    }
 	}
@@ -140,6 +142,7 @@ export namespace models {
 	    date: number;
 	    location: string;
 	    instrumentSerial: string;
+	    westCoastFlag: boolean;
 	    groupingIds: string[];
 	
 	    static createFrom(source: any = {}) {
@@ -153,6 +156,7 @@ export namespace models {
 	        this.date = source["date"];
 	        this.location = source["location"];
 	        this.instrumentSerial = source["instrumentSerial"];
+	        this.westCoastFlag = source["westCoastFlag"];
 	        this.groupingIds = source["groupingIds"];
 	    }
 	}

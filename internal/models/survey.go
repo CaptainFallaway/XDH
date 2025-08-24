@@ -6,5 +6,6 @@ type Survey struct {
 	Date             int64    `json:"date"`
 	Location         string   `json:"location"`
 	InstrumentSerial string   `json:"instrumentSerial"`
+	WestCoastFlag    bool     `json:"westCoastFlag"`
 	GroupingIds      []string `json:"groupingIds"`
 }

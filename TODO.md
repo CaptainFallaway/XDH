@@ -26,8 +26,8 @@
 ## TODO 2025-05-14
 
 - [] Add a switch for the state depending on if you are on the east side or west side of sweden.
-  - On the East coast the application should warn for higher copper rates.
-  - On the west coast the application should warn for higher lead & bly.
+  - On the East coast the application should warn for higher Cu and Sn.
+  - On the West coast the application should warn for higher Sn.
   
 ### Fixes
 

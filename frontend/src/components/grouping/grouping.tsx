@@ -10,15 +10,16 @@ import Notes from './notes';
 export interface GroupingProps {
   grouping: models.Grouping;
   metal: string;
+  westCoastFlag: boolean;
   [key: string]: any;
 }
 
-function Expanded({ grouping }: { grouping: models.Grouping }) {
+function Expanded({ grouping, westCoastFlag }: { grouping: models.Grouping; westCoastFlag: boolean }) {
   return (
-    <div className="mt-4">
-      <MetalSummary violations={grouping.violations} />
+    <div className="mt-4" onClick={(e) => e.stopPropagation()}>
+      <MetalSummary violations={grouping.violations} westCoastFlag={westCoastFlag} />
       <Notes notes={grouping.errorNotes} />
-      <ScansTable scans={grouping.validScans} unit={grouping.unit} />
+      <ScansTable scans={grouping.validScans} unit={grouping.unit} westCoastFlag={westCoastFlag} />
     </div>
   );
 }
@@ -32,7 +33,7 @@ export function SmallInfo({ title, text }: { title: string; text: string }) {
   );
 }
 
-export default function Grouping({ grouping, metal, ...props }: GroupingProps) {
+export default function Grouping({ grouping, metal, westCoastFlag, ...props }: GroupingProps) {
   let border = 'border-success';
 
   if (grouping.violations[metal] === 1) {
@@ -45,7 +46,10 @@ export default function Grouping({ grouping, metal, ...props }: GroupingProps) {
 
   return (
     <button
-      onClick={() => (expanded.value = !expanded.value)}
+      onClick={(e) => {
+        e.stopPropagation();
+        expanded.value = !expanded.value;
+      }}
       className={`${border} flex flex-col w-full p-4 bg-base-200 border rounded-md`}
       {...props}
     >
@@ -58,7 +62,7 @@ export default function Grouping({ grouping, metal, ...props }: GroupingProps) {
           {expanded.value ? <ChevronDown size={48} /> : <ChevronUp size={48} />}
         </div>
       </div>
-      {expanded.value ? <Expanded grouping={grouping} /> : null}
+      {expanded.value ? <Expanded grouping={grouping} westCoastFlag={westCoastFlag} /> : null}
     </button>
   );
 }

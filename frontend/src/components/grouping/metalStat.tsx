@@ -8,13 +8,26 @@ function MetalStat({ value }: { value: number }) {
   );
 }
 
-export default function MetalSummary({ violations }: { violations: Record<string, number> }) {
+export default function MetalSummary({
+  violations,
+  westCoastFlag,
+}: {
+  violations: Record<string, number>;
+  westCoastFlag: boolean;
+}) {
   return (
     <div class="stats card bg-base-100 shadow w-full mb-4">
-      <MetalStat value={violations.pb} />
-      <MetalStat value={violations.zn} />
-      <MetalStat value={violations.cu} />
-      <MetalStat value={violations.sn} />
+      {westCoastFlag ? (
+        <>
+          <MetalStat value={violations.Pb} />
+          <MetalStat value={violations.Sn} />
+        </>
+      ) : (
+        <>
+          <MetalStat value={violations.Cu} />
+          <MetalStat value={violations.Zn} />
+        </>
+      )}
     </div>
   );
 }
